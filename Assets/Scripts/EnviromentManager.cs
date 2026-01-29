@@ -68,12 +68,12 @@ public class EnviromentManager : MonoBehaviour
         }
 
         // 3. Ambient Intensity (Lighting Tab)
-        RenderSettings.ambientIntensity = Mathf.Lerp(0.25f, 1.5f, ambientAlpha);
+        RenderSettings.ambientIntensity = Mathf.Lerp(0.05f, 1.5f, ambientAlpha);
 
         // 4. Chỉnh độ sáng (V - Value) cho Skybox
         if (skyboxMaterial != null)
         {
-            float vValue = Mathf.Lerp(0.1f, 0.55f, ambientAlpha);
+            float vValue = Mathf.Lerp(0.03f, 0.55f, ambientAlpha);
             Color finalSkyColor = Color.HSVToRGB(0, 0, vValue);
 
             if (skyboxMaterial.HasProperty("_Tint"))

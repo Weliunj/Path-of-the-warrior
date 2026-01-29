@@ -43,10 +43,12 @@ GameObject:
   - component: {fileID: 337696442091965241}
   - component: {fileID: 7123489230740424879}
   - component: {fileID: -8944542486358889742}
+  - component: {fileID: 1351736249891906269}
   - component: {fileID: 6783720690928042296}
   - component: {fileID: 7629865563330615341}
   - component: {fileID: 6980827690473021161}
   - component: {fileID: 1567094018723857324}
+  - component: {fileID: 8761049516252937909}
   m_Layer: 9
   m_Name: PlayerManager
   m_TagString: Player
@@ -110,8 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: c67ccc7801285b9478af30cbda3ae67e, type: 2}
   CinemachineCameraTarget: {fileID: 1483418716102677561}
-  TopClamp: 60
-  BottomClamp: -60
+  TopClamp: 70
+  BottomClamp: -80
   GroundedOffset: -0.47
   GroundedRadius: 1
   GroundLayers:
@@ -130,6 +132,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownTime: 0.5
+--- !u!114 &1351736249891906269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6658753096229190408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cc5e663fb715c46bbd29f609a05605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  inventory: {fileID: 11400000, guid: 630c9128bdb03264dbdef1ac43db2f1d, type: 2}
+  interactionDistance: 3.65
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  Crosshair: {fileID: 0}
+  animationSpeed: 10
 --- !u!114 &6783720690928042296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,6 +300,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &8761049516252937909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6658753096229190408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &8083119333230188595
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: sword_1handed
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6c5aa764bd9e1034ba3403ab8e17f3f8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -501,6 +557,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4cae95f7110de5743be5cf25176c8a87, type: 3}
       propertyPath: m_Name
       value: torch_burnt
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4cae95f7110de5743be5cf25176c8a87, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
