@@ -4,7 +4,7 @@ using UnityEngine;
 public class MinionSkeletron : EnemyBase
 {
     [Header("Atk")]
-    public float atkcd;
+    public float atkcd = 5f;
     
     protected override void Awake()
     {

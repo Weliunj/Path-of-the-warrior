@@ -5,6 +5,6 @@ public class Equipment : ItemObject
 {
     void Awake()
     {
-        type = ItemType.Equipment;
+        type = ItemType.Chest;
     }
 }

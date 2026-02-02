@@ -4,7 +4,14 @@ using UnityEngine;
 public enum ItemType
 {
     Food,       // Thức ăn (hồi máu, năng lượng)
-    Equipment,  // Trang bị (vũ khí, giáp)
+    Helmet,
+    Chest,
+    Legguards,
+    Boots,
+    Gloves,
+    Belt,
+    Weapon,
+    Shield,
     Default     // Vật phẩm cơ bản (nguyên liệu, rác)
 }
 
@@ -42,6 +49,11 @@ public class Item
     public int id;
     public ItemBuff[] buffs; // Lưu lại các chỉ số riêng biệt của thực thể này
 
+    public Item()
+    {
+        Name = "";
+        id = -1;
+    }
     public Item(ItemObject item)
     {
         Name = item.name;

@@ -2,9 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System;
+using UnityEngine.Events;
+using Unity.VisualScripting;
+using UnityEditor.U2D;
 
 public class DisplayInventory : MonoBehaviour
 {
+    public MouseItem mouseItem = new MouseItem();
+
     [Header("Cấu hình UI")]
     public GameObject inventoryPrefab; // Mẫu thiết kế của 1 ô đồ (Prefab)
     public InventoryObject inventory;  // File dữ liệu rương đồ (ScriptableObject)
@@ -14,72 +21,118 @@ public class DisplayInventory : MonoBehaviour
 
     // Dictionary giúp liên kết Dữ liệu (Slot) với Đối tượng hiển thị (GameObject)
     // Giúp cập nhật số lượng cực nhanh mà không cần tạo lại toàn bộ UI
-    Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
+    Dictionary<GameObject, InventorySlot> itemDisplayed = new Dictionary<GameObject, InventorySlot>();
 
     void Start()
     {
         // Khi game bắt đầu, vẽ rương đồ dựa trên dữ liệu có sẵn
-        CreateDisplay(); 
+        CreateSlot(); 
     }
 
     void Update()
     {
+        UpdateSlot();
         ToggleUI();      // Lắng nghe phím Tab để đóng/mở rương
-        UpdateDisplay(); // Đồng bộ hóa dữ liệu từ ScriptableObject lên màn hình
     }
 
     // Hàm khởi tạo giao diện rương đồ lần đầu
-    public void CreateDisplay()
-    {   
-        for(int i = 0; i < inventory.Container.Items.Count; i++)
-        {
-            InventorySlot slot = inventory.Container.Items[i];
-
-            // 1. Sinh ra một ô vật phẩm UI từ mẫu Prefab làm con của đối tượng này (Panel)
-            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
-            
-            // 2. Tìm hình ảnh trong Database dựa vào ID của vật phẩm và gán vào Icon của ô đồ
-            // GetChild(0) thường là đối tượng chứa thành phần Image bên trong Prefab
-            obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.item.id].uiDisplay;
-            
-            // 3. Hiển thị số lượng (amount) lên Text của ô đồ, định dạng "n0" để có dấu phẩy hàng nghìn
-            obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-            
-            // 4. Lưu ô đồ vừa tạo vào từ điển để quản lý
-            itemDisplayed.Add(slot, obj);
-        }
-    }
-
-    // Hàm cập nhật rương đồ (Thêm ô mới hoặc cập nhật số lượng)
-    public void UpdateDisplay()
+    public void CreateSlot()
     {
-        for(int i = 0; i < inventory.Container.Items.Count; i++)
+        itemDisplayed = new Dictionary<GameObject, InventorySlot>();
+        for(int i = 0; i < inventory.Container.Items.Length; i++)
         {
-            InventorySlot slot = inventory.Container.Items[i];
+            // Tạo ra một bản sao của Prefab (ô đồ trên UI)
+            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
 
-            // Nếu vật phẩm này ĐÃ được hiển thị trên UI rồi
-            if (itemDisplayed.ContainsKey(slot))
+            AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj);});
+            AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj);});
+            AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj);});
+            AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj);});
+            AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj);});
+
+            // Lưu mối quan hệ giữa "Cái ô trên màn hình" và "Dữ liệu trong Script"
+            itemDisplayed.Add(obj, inventory.Container.Items[i]);
+        }
+    }
+    public void UpdateSlot()
+    {
+        foreach(KeyValuePair<GameObject, InventorySlot> _slot in itemDisplayed)
+        {
+            if(_slot.Value.ID >= 0) // Nếu ô có vật phẩm
             {
-                // Chỉ cập nhật lại con số hiển thị cho đúng với dữ liệu mới nhất
-                itemDisplayed[slot].GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
+                // 1. Hiển thị hình ảnh từ Database dựa trên ID
+                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[_slot.Value.item.id].uiDisplay;
+                // 2. Hiện màu sắc (Alpha = 1)
+                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1,1,1,1);
+                // 3. Hiện số lượng (nếu = 1 thì ẩn chữ số đi cho đẹp)
+                _slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = _slot.Value.amount == 1 ? "" : _slot.Value.amount.ToString("n0");
             }
-            else
+            else // Nếu ô trống (ID = -1)
             {
-                // Nếu đây là vật phẩm MỚI nhặt (chưa có ô trên UI): Tạo mới ô hiển thị
-                var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
-                
-                // Gán hình ảnh từ Database
-                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.item.id].uiDisplay;
-                
-                // Gán số lượng ban đầu
-                obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-                
-                // Đưa vào từ điển để theo dõi
-                itemDisplayed.Add(slot, obj);
+                // Ẩn hình ảnh và làm mờ màu sắc (Alpha = 0)
+                _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1,1,1,1);
+                _slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
             }
         }
     }
 
+    private void  AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)
+    {
+        EventTrigger trigger = obj.GetComponent<EventTrigger>();
+        var eventTrigger = new EventTrigger.Entry();
+        eventTrigger.eventID = type;
+        eventTrigger.callback.AddListener(action);
+        trigger.triggers.Add(eventTrigger);
+    }
+    public void OnEnter(GameObject obj)
+    {
+        mouseItem.hoverObj = obj;
+        if(itemDisplayed.ContainsKey(obj))
+            mouseItem.hoverItem = itemDisplayed[obj];
+    }
+    public void OnExit(GameObject obj)
+    {
+        mouseItem.hoverObj = null;
+        mouseItem.hoverItem = null;
+    }
+    public void OnDragStart(GameObject obj)
+    {
+        //Tạo ra một đối tượng trống mới ngay khi bạn bắt đầu kéo
+        var mouseObject = new GameObject();     
+        var rt = mouseObject.AddComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(90, 90);     //sizeDelta: 
+
+        //Đưa nó ra ngoài cùng cấp với bảng Inventory để nó không bị các ô đồ khác che mất
+        mouseObject.transform.SetParent(transform.parent);
+        if(itemDisplayed[obj].ID >= 0)
+        {
+            var img = mouseObject.AddComponent<Image>();
+            img.sprite = inventory.database.GetItem[itemDisplayed[obj].ID].uiDisplay;
+            img.raycastTarget = false;
+        }
+        mouseItem.obj = mouseObject;
+        mouseItem.item = itemDisplayed[obj];
+    }
+    public void OnDragEnd(GameObject obj)
+    {
+        if (mouseItem.hoverObj)
+        {
+            inventory.MoveItem(itemDisplayed[obj], itemDisplayed[mouseItem.hoverObj]);
+        }
+        else
+        {
+            
+        }
+        Destroy(mouseItem.obj);
+        mouseItem.item = null;
+    }
+    public void OnDrag(GameObject obj)
+    {
+        if(mouseItem.obj != null)
+        {
+            mouseItem.obj.GetComponent<RectTransform>().position = Input.mousePosition;
+        }
+    }
     // Hàm xử lý logic đóng/mở giao diện và con trỏ chuột
     public void ToggleUI()
     {

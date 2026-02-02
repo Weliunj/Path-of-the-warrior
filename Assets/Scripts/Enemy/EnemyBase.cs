@@ -46,11 +46,11 @@ public class EnemyBase : MonoBehaviour
     // ==================== CÀI ĐẶT NÓN TẦM NHÌN 3D (VÙNG XANH) ====================
     [Header("Vision Cone (Green Zone)")]
     public Material visionMaterial;   // Vật liệu của nón tầm nhìn (nên dùng màu xanh trong suốt)
-    public float visionRange = 10f;   // Tầm nhìn xa tối đa (Độ dài nón)
-    public float visionAngle = 60f;   // Góc mở của nón tầm nhìn
-    public float visionHeight = 2f;   // Chiều cao khối nón 3D
-    public int resolution = 40;       // Số lượng tia quét (Càng cao nón càng mịn nhưng nặng máy)
-    public float updateRate = 0.05f;  // Thời gian chờ cập nhật nón (Giảm lag cho CPU)
+    public float visionRange = 40f;   // Tầm nhìn xa tối đa (Độ dài nón)
+    public float visionAngle = 90f;   // Góc mở của nón tầm nhìn
+    public float visionHeight = 10f;   // Chiều cao khối nón 3D
+    public int resolution = 70;       // Số lượng tia quét (Càng cao nón càng mịn nhưng nặng máy)
+    public float updateRate = 0.2f;  // Thời gian chờ cập nhật nón (Giảm lag cho CPU)
     public LayerMask playerLayer;     // Lớp vật lý của Người chơi (Layer Player)
     public LayerMask obstructLayer;   // Lớp vật lý của vật cản (Layer Wall/Obstacle)
 
@@ -88,6 +88,7 @@ public class EnemyBase : MonoBehaviour
         // Tìm đối tượng có Tag là "Player" để AI biết mục tiêu ở đâu
         player = GameObject.FindGameObjectWithTag("Player");
         wanderTimer = wanderWaitTime; // Khởi tạo thời gian nghỉ ban đầu cho Wander
+        currentState = State.Atk;
     }
 
     // ==================== VÒNG LẶP CHÍNH (UPDATE) ====================

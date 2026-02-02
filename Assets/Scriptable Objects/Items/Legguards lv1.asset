@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7ac4f220fd3184d89a12be0932af64, type: 3}
+  m_Name: Legguards lv1
+  m_EditorClassIdentifier: Assembly-CSharp::Equipment
+  Id: 0
+  uiDisplay: {fileID: -879332330, guid: 30a66fa6d5d7d314595f0f5c884af4a5, type: 3}
+  type: 3
+  description: 
+  buffs: []
