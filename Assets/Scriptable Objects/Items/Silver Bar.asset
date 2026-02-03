@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 489a1172fe848004b8aefcf56d57b413, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Silver Bar
   m_EditorClassIdentifier: Assembly-CSharp::DefaultObject
-  Id: 2
   uiDisplay: {fileID: 1174803004, guid: 63a6986070555ae47a1df8508664cbc3, type: 3}
-  type: 2
-  description: "M\u1ED9t th\u1ECFi b\u1EA1c nguy\xEAn ch\u1EA5t \u0111\xE3 \u0111\u01B0\u1EE3c
-    tinh luy\u1EC7n."
+  stackable: 1
+  type: 9
+  description: 
+  data:
+    Name: 
+    Id: 14
+    buffs: []

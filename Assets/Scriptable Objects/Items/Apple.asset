@@ -9,20 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57ec1e9c654294f4e8a662894828c9fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: Assembly-CSharp::FoodObject
-  Id: 0
   uiDisplay: {fileID: -1454192701, guid: 03ad9fb7d96e0dc4d87136e7d72854ff, type: 3}
+  stackable: 1
   type: 0
-  description: "M\u1ED9t qu\u1EA3 t\xE1o \u0111\u1ECF m\u1ECDng, ch\u1EE9a nhi\u1EC1u
-    n\u01B0\u1EDBc v\xE0 vitamin."
-  buffs:
-  - atribute: 0
-    value: 0
-    min: 2
-    max: 4
-  - atribute: 2
-    value: 0
-    min: 3
-    max: 7
+  description: 
+  data:
+    Name: 
+    Id: 0
+    buffs: []

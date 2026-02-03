@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item Database", menuName = "Inventory System/Items/Database")]
@@ -11,31 +10,35 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 {
     // Mảng chứa tất cả các ItemObject (vật phẩm) bạn đã tạo ra trong Project.
     // Unity có thể hiển thị và lưu trữ mảng (Array) này một cách bình thường.
-    public ItemObject[] item;
+    public ItemObject[] Items;
 
     // Dictionary để tra cứu ID của một vật phẩm cực nhanh.
     // Key: ItemObject (Vật phẩm) | Value: int (Số ID tương ứng).
     // Lưu ý: Unity không thể lưu trực tiếp Dictionary vào file .asset, nên ta cần interface ở trên.
-    public Dictionary<int, ItemObject> GetItem = new Dictionary<int, ItemObject>();
-
+    // public Dictionary<int, ItemObject> GetItem = new Dictionary<int, ItemObject>();
+    [ContextMenu("Update ID's")]
+    public void UpdateID()
+    {
+        // Khởi tạo lại Dictionary và đổ dữ liệu từ mảng 'item' vào để sử dụng trong lúc chơi.
+        // GetItem = new Dictionary<int, ItemObject>();
+        for (int i = 0; i < Items.Length; i++)
+        {
+            // Gán ID cho vật phẩm dựa trên vị trí (chỉ số i) của nó trong mảng.
+            if (Items[i].data.Id != i)
+            Items[i].data.Id = i;
+                // GetItem.Add(i, Items[i]);
+        }
+    }
     // Hàm này chạy NGAY SAU KHI Unity nạp xong dữ liệu từ ổ cứng vào RAM.
     public void OnAfterDeserialize()
     {
-        // Khởi tạo lại Dictionary và đổ dữ liệu từ mảng 'item' vào để sử dụng trong lúc chơi.
-        GetItem = new Dictionary<int, ItemObject>();
-        for (int i = 0; i < item.Length; i++)
-        {
-            // Gán ID cho vật phẩm dựa trên vị trí (chỉ số i) của nó trong mảng.
-            if (item[i] != null)
-            item[i].Id = i;
-                GetItem.Add(i, item[i]);
-        }
+        UpdateID();
     }
 
     // Hàm này chạy NGAY TRƯỚC KHI Unity tiến hành lưu dữ liệu từ RAM xuống ổ cứng.
     public void OnBeforeSerialize()
     {
-        GetItem = new Dictionary<int, ItemObject>();
+        // GetItem = new Dictionary<int, ItemObject>();
     }
 
     /* ====================================================================================================

@@ -9,20 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7ac4f220fd3184d89a12be0932af64, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Silver Sword
   m_EditorClassIdentifier: Assembly-CSharp::Equipment
-  Id: 4
   uiDisplay: {fileID: 1660072694, guid: bed4efb809c82024992dce89388be763, type: 3}
-  type: 1
-  description: "Thanh ki\u1EBFm th\u1EB3ng b\u1EB1ng s\u1EAFt v\u1EDBi l\u01B0\u1EE1i
-    ki\u1EBFm \u0111\u01B0\u1EE3c m\xE0i s\u1EAFc c\u1EA3 hai c\u1EA1nh."
-  buffs:
-  - atribute: 2
-    value: 0
-    min: 3
-    max: 4
-  - atribute: 3
-    value: 0
-    min: 3
-    max: 4
+  stackable: 0
+  type: 7
+  description: 
+  data:
+    Name: 
+    Id: 16
+    buffs: []

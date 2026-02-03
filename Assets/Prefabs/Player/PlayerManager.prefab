@@ -118,7 +118,7 @@ MonoBehaviour:
   GroundedRadius: 1
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
 --- !u!114 &-8944542486358889742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +144,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8cc5e663fb715c46bbd29f609a05605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  toggleUI: 0
+  InventoryPanel:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  panelMoveDuration: 0.25
+  panelMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   inventory: {fileID: 11400000, guid: 630c9128bdb03264dbdef1ac43db2f1d, type: 2}
   interactionDistance: 3.65
   interactableLayer:

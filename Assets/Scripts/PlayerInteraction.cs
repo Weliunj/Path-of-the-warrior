@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public MouseItem mouseItem = new MouseItem();
     public bool toggleUI = false;      // Biến kiểm tra rương đang đóng hay mở
     public GameObject[] InventoryPanel;
 
@@ -13,6 +12,7 @@ public class PlayerInteraction : MonoBehaviour
     private RectTransform[] panelRects;
 
     public InventoryObject inventory;
+    public InventoryObject equipment;
     public float interactionDistance = 3f; 
     public LayerMask interactableLayer;   
     public RectTransform Crosshair;
@@ -94,10 +94,12 @@ public class PlayerInteraction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             inventory.Save();
+            equipment.Save();
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
             inventory.Load();
+            equipment.Load();
         }
         // 1. Tạo tia Ray từ tâm màn hình
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -175,6 +177,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnApplicationQuit()    // Được gọi tự động khi bạn nhấn Stop (tắt game) hoặc thoát ứng dụng
     {
-        inventory.Container.Items = new InventorySlot[50];
+        inventory.Container.Clear();
+        equipment.Container.Clear();
     }
 }

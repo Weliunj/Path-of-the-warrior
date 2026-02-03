@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7ac4f220fd3184d89a12be0932af64, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Glove lv1
   m_EditorClassIdentifier: Assembly-CSharp::Equipment
-  Id: 0
-  uiDisplay: {fileID: 1757104270, guid: 1c507fd26b7ac4f4eb9e481c8d589500, type: 3}
+  uiDisplay: {fileID: 959430559, guid: ffc7dfc97ea027540b1e5775e24fd118, type: 3}
+  stackable: 0
   type: 5
   description: 
-  buffs: []
+  data:
+    Name: 
+    Id: 7
+    buffs: []

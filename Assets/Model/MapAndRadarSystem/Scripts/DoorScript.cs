@@ -2,34 +2,39 @@ using UnityEngine;
 
 namespace MapAndRadarSystem
 {
+    [RequireComponent(typeof(AudioSource), typeof(Animator))]
     public class DoorScript : MonoBehaviour
     {
-        private Animation animation;
+        private Animator animator;
         public AudioClip audioOpen;
         public AudioClip audioClose;
         private AudioSource audioSource;
-        // Start is called before the first frame update
-        void Start()
+
+        private const float interactionCooldown = 0.5f;
+        private float lastTimeInteracted = -1f;
+
+        void Awake()
         {
-            animation = GetComponent<Animation>();
+            animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
         }
 
-        float lastTimeInteracted = 0;
         public void DoorInteraction(bool open)
         {
-            if (Time.time > lastTimeInteracted + 0.5f)
+            if (Time.time > lastTimeInteracted + interactionCooldown)
             {
                 lastTimeInteracted = Time.time;
                 if (open)
                 {
-                    animation.Play("Open");
-                    audioSource.PlayOneShot(audioOpen);
+                    animator.SetTrigger("Open");
+                    if (audioOpen != null)
+                        audioSource.PlayOneShot(audioOpen);
                 }
                 else
                 {
-                    animation.Play("Close");
-                    audioSource.PlayOneShot(audioClose);
+                    animator.SetTrigger("Close");
+                    if (audioClose != null)
+                        audioSource.PlayOneShot(audioClose);
                 }
             }
         }

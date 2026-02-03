@@ -9,21 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57ec1e9c654294f4e8a662894828c9fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Pineapple
   m_EditorClassIdentifier: Assembly-CSharp::FoodObject
-  Id: 1
   uiDisplay: {fileID: 1244554663, guid: 2d2e997cdc342de44b4d5ca4acfa9cd7, type: 3}
+  stackable: 1
   type: 0
-  description: "M\u1ED9t lo\u1EA1i tr\xE1i c\xE2y nhi\u1EC7t \u0111\u1EDBi v\u1EDBi
-    l\u1EDBp v\u1ECF th\xF4 r\xE1p v\xE0 ph\u1EA7n th\u1ECBt v\xE0ng \u01B0\u01A1m,
-    m\u1ECDng n\u01B0\u1EDBc."
-  buffs:
-  - atribute: 0
-    value: 0
-    min: 3
-    max: 6
-  - atribute: 2
-    value: 0
-    min: 5
-    max: 8
+  description: 
+  data:
+    Name: 
+    Id: 13
+    buffs: []

@@ -9,20 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7ac4f220fd3184d89a12be0932af64, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Wood Shield
   m_EditorClassIdentifier: Assembly-CSharp::Equipment
-  Id: 7
-  uiDisplay: {fileID: -362480336, guid: cafa5746164b8fd419af0d75063b4b9d, type: 3}
-  type: 1
-  description: "M\u1ED9t chi\u1EBFc khi\xEAn tr\xF2n \u0111\u01B0\u1EE3c gh\xE9p
-    t\u1EEB nh\u1EEFng t\u1EA5m g\u1ED7 s\u1ED3i ch\u1EAFc ch\u1EAFn,"
-  buffs:
-  - atribute: 2
-    value: 0
-    min: 3
-    max: 4
-  - atribute: 0
-    value: 0
-    min: 3
-    max: 4
+  uiDisplay: {fileID: 974448021, guid: c5c54c715fc9976428b3015c2c07e428, type: 3}
+  stackable: 0
+  type: 8
+  description: 
+  data:
+    Name: 
+    Id: 19
+    buffs: []

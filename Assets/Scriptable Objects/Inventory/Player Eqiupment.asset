@@ -17,58 +17,50 @@ MonoBehaviour:
   Container:
     Items:
     - AllowedItems: 01000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 02000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 03000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 04000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 05000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 06000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 07000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0
     - AllowedItems: 08000000
-      ID: -1
       item:
         Name: 
-        id: 0
+        id: -1
         buffs: []
       amount: 0

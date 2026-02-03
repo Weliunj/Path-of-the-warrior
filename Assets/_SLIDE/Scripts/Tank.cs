@@ -1,6 +1,4 @@
 using System.Collections;
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tank : MonoBehaviour

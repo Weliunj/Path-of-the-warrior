@@ -5,7 +5,7 @@ public class Laser : MonoBehaviour
 {
     private VolumetricLineBehavior volumetricLines;
     public float point;
-    private float leftTime = 2f;
+    //private float leftTime = 2f;
     void Start()
     {
         volumetricLines = GetComponent<VolumetricLineBehavior>();

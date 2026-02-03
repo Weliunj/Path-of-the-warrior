@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 489a1172fe848004b8aefcf56d57b413, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a9d6733ec035614daf43f810dc4d305, type: 3}
   m_Name: Wood Log
   m_EditorClassIdentifier: Assembly-CSharp::DefaultObject
-  Id: 0
   uiDisplay: {fileID: 1436482567, guid: c033d41a2bd672748a531edcb08f4245, type: 3}
-  type: 2
-  description: "Kh\xFAc g\u1ED7 c\u1EE9ng c\xE1p. "
+  stackable: 1
+  type: 9
+  description: 
+  data:
+    Name: 
+    Id: 18
+    buffs: []
