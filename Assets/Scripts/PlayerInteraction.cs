@@ -91,7 +91,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         ToggleUI();      // Lắng nghe phím Tab để đóng/mở rương
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             inventory.Save();
             equipment.Save();

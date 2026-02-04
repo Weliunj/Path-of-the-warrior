@@ -176,6 +176,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   inventory: {fileID: 11400000, guid: 630c9128bdb03264dbdef1ac43db2f1d, type: 2}
+  equipment: {fileID: 11400000, guid: 20bb06be44a9cbd4cbc4e118564c6f67, type: 2}
   interactionDistance: 3.65
   interactableLayer:
     serializedVersion: 2

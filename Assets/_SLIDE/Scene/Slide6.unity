@@ -414,15 +414,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcee8eed9c8a0742be2424902e6e285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrianGenerate
-  autoGenerate: 0
+  autoGenerate: 1
   terrain: {fileID: 1413856836}
   type: 2
+  resolution: 513
+  radius: 0.66
   radialCenter: {x: 0.5, y: 0.5}
-  radius: 0
   invertRadial: 0
-  perlinScale: 20
-  perlinOffsetX: 0
-  perlinOffsetY: 0
+  perlinScale: 2.62
+  offsetX: 0
+  offsetY: 0
+  octaves: 3
+  persistence: 0.5
+  lacunarity: 2
+  heightMultiplier: 0.25
 --- !u!154 &1413856835
 TerrainCollider:
   m_ObjectHideFlags: 0

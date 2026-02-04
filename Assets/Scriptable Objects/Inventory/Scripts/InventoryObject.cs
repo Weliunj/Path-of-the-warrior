@@ -103,32 +103,32 @@ public class InventoryObject : ScriptableObject
     [ContextMenu("Save")] // Chuột phải vào Script trong Inspector để hiện nút Save
     public void Save()
     {
-        /*
-        // 1. Chuyển đối tượng hiện tại thành chuỗi JSON
-        string saveData = JsonUtility.ToJson(this, true);       //true: định dạng dễ đọc
-        // 2. Công cụ mã hóa nhị phân để bảo mật file
-        BinaryFormatter bf = new BinaryFormatter();
-        // 3. Tạo file tại đường dẫn lưu trữ cố định của hệ điều hành
-        FileStream file = File.Create(string.Concat(Application.persistentDataPath, savePath));
-        // 4. Mã hóa chuỗi JSON và ghi vào file
-        bf.Serialize(file, saveData);
-        file.Close(); // Luôn đóng file sau khi ghi xong
-        Debug.Log("Đã lưu tại: " + Application.persistentDataPath);
-        */
+        // Construct the full file path safely
+        string fullPath = Path.Combine(Application.persistentDataPath, savePath);
+        // Get the directory path from the full file path
+        string directoryPath = Path.GetDirectoryName(fullPath);
+
+        // Ensure the directory exists before trying to create the file
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
 
         // Tạo bộ mã hóa nhị phân
         IFormatter formatter = new BinaryFormatter();
         // Tạo luồng dữ liệu (Stream) trỏ đến file cần tạo
-        Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create, FileAccess.Write);
+        Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
         // Mã hóa toàn bộ đối tượng Container và đẩy vào file
         formatter.Serialize(stream, Container);
         // Đóng luồng để hoàn tất ghi file
         stream.Close();
+        Debug.Log("Đã lưu tại: " + fullPath);
     }
     [ContextMenu("Load")]   
     public void Load()
     {
-        string path = string.Concat(Application.persistentDataPath, savePath);
+        // Use Path.Combine for consistency and correctness
+        string path = Path.Combine(Application.persistentDataPath, savePath);
         // Kiểm tra xem file có tồn tại hay không
         if(File.Exists(path)){
             /*

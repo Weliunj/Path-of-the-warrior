@@ -247,6 +247,37 @@ Transform:
   - {fileID: 2844691747499596815}
   m_Father: {fileID: 8207361416214265244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1323947695516593506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4463973912048216768}
+  m_Layer: 0
+  m_Name: FirePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4463973912048216768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323947695516593506}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: 0.97899985, z: 1.0160011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4946626020604072750}
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
 --- !u!1 &1366722822156972510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,14 +1083,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4468134628851119030}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.32968357, y: -0.9392359, z: -0.026407395, w: 0.09190977}
+  m_LocalRotation: {x: -0.3448163, y: -0.9214922, z: 0.024112834, w: 0.17712279}
   m_LocalPosition: {x: 0.002, y: 0.052, z: 0.074}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7375427901694952338}
   m_Father: {fileID: 9098149896231031285}
-  m_LocalEulerAnglesHint: {x: -6.327, y: -171.014, z: 38.186}
+  m_LocalEulerAnglesHint: {x: -4.457, y: -159.873, z: 40.24}
 --- !u!33 &8505582968230861395
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1160,6 +1191,7 @@ Transform:
   - {fileID: 2367833510199769389}
   - {fileID: 1490661954604440715}
   - {fileID: 6842398225821347274}
+  - {fileID: 4463973912048216768}
   m_Father: {fileID: 844428527259602229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7113313093928754665
@@ -1200,18 +1232,19 @@ MonoBehaviour:
   currentState: 0
   Movespeed: 3
   Sprintspeed: 6
-  attackDistance: 20
+  attackDistance: 17.52
   IdlePos: {fileID: 8656440821106620769}
   WanderPos: {fileID: 8656440821106620769}
-  wanderRadius: 40
-  wanderWaitTime: 2
+  wanderRadius: 14.69
+  wanderWaitTime: 3
   patrolWaypoints: []
   waypointWaitTime: 2
   visionMaterial: {fileID: 2100000, guid: 32df1d0d8b2610645abd1cb7f227630c, type: 2}
-  visionRange: 40
+  visionRange: 47.2
   visionAngle: 90
   visionHeight: 10
-  resolution: 10
+  visionHeightOffset: 0.7
+  resolution: 70
   updateRate: 0.2
   playerLayer:
     serializedVersion: 2
@@ -1219,7 +1252,10 @@ MonoBehaviour:
   obstructLayer:
     serializedVersion: 2
     m_Bits: 4096
-  atkcd: 0
+  projectileTag: Arrow
+  firePoint: {fileID: 4463973912048216768}
+  atkDmg: 15
+  atkcd: 5
 --- !u!136 &4255315580602594278
 CapsuleCollider:
   m_ObjectHideFlags: 0
