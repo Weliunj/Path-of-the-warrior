@@ -16,7 +16,7 @@ MonoBehaviour:
   SprintSpeed: 14
   RotationSpeed: 1
   SpeedChangeRate: 10
-  JumpHeight: 1.3
+  JumpHeight: 1.4
   Gravity: -25
   JumpTimeout: 0.1
   FallTimeout: 0.15
