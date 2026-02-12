@@ -13,6 +13,7 @@ public class InventoryObject : ScriptableObject
     public string savePath;           // Tên file lưu (ví dụ: /inventory.save)
     public ItemDatabaseObject database; // Cơ sở dữ liệu để tra cứu ID vật phẩm
     public Inventory Container;
+    public InventorySlot[] GetSlots { get { return Container.Slots; }}
 
 // Hàm OnEnable: Chạy khi đối tượng rương đồ này được kích hoạt/nạp lên
 
@@ -27,7 +28,7 @@ public class InventoryObject : ScriptableObject
         }
 
         // Kiểm tra ID hợp lệ trước khi truy cập database
-        if (_item.Id < 0 || database == null || database.Items == null)
+        if (_item.Id < 0 || database == null || database.ItemObjects == null)
         {
             Debug.LogWarning($"[InventoryObject] Invalid or missing Item Id {_item.Id}. Cannot add to inventory.");
             return false;
@@ -38,7 +39,7 @@ public class InventoryObject : ScriptableObject
 
         InventorySlot slot = FindItemOnInventory(_item);
 
-        if(!database.Items[_item.Id].stackable || slot == null)
+        if(!database.ItemObjects[_item.Id].stackable || slot == null)
         {
             SetEmptySlot(_item, _amount);
             return true;
@@ -52,9 +53,9 @@ public class InventoryObject : ScriptableObject
         get
         {
             int counter = 0;
-            for (int i = 0; i < Container.Items.Length; i++)
+            for (int i = 0; i < GetSlots.Length; i++)
             {
-                if(Container.Items[i].item.Id <= -1)
+                if(GetSlots[i].item.Id <= -1)
                     counter++;
             }
             return counter;
@@ -63,11 +64,11 @@ public class InventoryObject : ScriptableObject
 
     public InventorySlot FindItemOnInventory(Item _item)
     {
-        for (int i = 0; i < Container.Items.Length; i++)
+        for (int i = 0; i < GetSlots.Length; i++)
         {
-            if(Container.Items[i].item.Id == _item.Id)
+            if(GetSlots[i].item.Id == _item.Id)
             {
-                return Container.Items[i];
+                return GetSlots[i];
             }
         }
         return null;
@@ -75,13 +76,13 @@ public class InventoryObject : ScriptableObject
 
     public InventorySlot SetEmptySlot(Item _item, int _amount)
     {
-        for (int i = 0; i < Container.Items.Length; i++)
+        for (int i = 0; i < GetSlots.Length; i++)
         {
             // ID < 0 nghĩa là ô trống (tránh nhầm ID==0)
-            if(Container.Items[i].item.Id < 0)
+            if(GetSlots[i].item.Id < 0)
             {
-                 Container.Items[i].UpdateSlot(_item, _amount);
-                 return Container.Items[i];
+                 GetSlots[i].UpdateSlot(_item, _amount);
+                 return GetSlots[i];
             }
         }
         //Set up funcionality for full inventory
@@ -144,9 +145,9 @@ public class InventoryObject : ScriptableObject
             Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             // Giải mã dữ liệu từ file và ép kiểu ngược lại thành lớp Inventory
             Inventory newContainer = (Inventory)formatter.Deserialize(stream);
-            for (int i = 0; i < Container.Items.Length; i++)
+            for (int i = 0; i < GetSlots.Length; i++)
             {
-                Container.Items[i].UpdateSlot( newContainer.Items[i].item, newContainer.Items[i].amount);
+                GetSlots[i].UpdateSlot( newContainer.Slots[i].item, newContainer.Slots[i].amount);
             }
             stream.Close();
         }
@@ -161,21 +162,31 @@ public class InventoryObject : ScriptableObject
 [System.Serializable]
 public class Inventory
 {
-    public InventorySlot[] Items = new InventorySlot[50];
+    public InventorySlot[] Slots = new InventorySlot[50];
     public void Clear()
     {
-        for (int i = 0; i < Items.Length; i++)
+        for (int i = 0; i < Slots.Length; i++)
         {
-            Items[i].RemoveItem();
+            Slots[i].RemoveItem();
         }
     }
 }
+
+public delegate void SlotUpdated(InventorySlot _slot);
+
 [System.Serializable]
 public class InventorySlot
 {
     public ItemType[] AllowedItems = new ItemType[0];
     [System.NonSerialized]
     public UserInterface parent;
+    [System.NonSerialized]
+    public GameObject slotDisplay;
+
+    [System.NonSerialized]
+    public SlotUpdated OnAfterUpdate;
+    [System.NonSerialized]
+    public SlotUpdated OnBeforeUpdate;
     public Item item; // File Asset vật phẩm (dùng để hiển thị trong game)
     public int amount;      // Số lượng
 
@@ -185,7 +196,7 @@ public class InventorySlot
         {
             if(item.Id >= 0)
             {
-                return parent.inventory.database.Items[item.Id];
+                return parent.inventory.database.ItemObjects[item.Id];
             }
             return null;
         }
@@ -193,28 +204,32 @@ public class InventorySlot
 
     public InventorySlot()
     {
-        item = new Item();
-        amount = 0;
+        UpdateSlot(new Item(), 0);
     }
     public InventorySlot(Item _item, int _amount)
     {
-        item = _item;
-        amount = _amount;
+        UpdateSlot(_item, _amount);
     }
     public void UpdateSlot(Item _item, int _amount)
     {
+        if(OnBeforeUpdate != null)
+        {
+            OnBeforeUpdate.Invoke(this);
+        }
         item = _item;
         amount = _amount;
+        if(OnAfterUpdate != null)
+        {
+            OnAfterUpdate.Invoke(this);
+        }
     }
-
     public void RemoveItem()
     {
-        item = new Item();
-        amount = 0;    
+        UpdateSlot(new Item(), 0);  
     }
     public void AddAmount(int value)
     {
-        amount += value;
+        UpdateSlot(item, amount += value);
     }
 
     public bool CanplaceInSlot(ItemObject _itemObject)

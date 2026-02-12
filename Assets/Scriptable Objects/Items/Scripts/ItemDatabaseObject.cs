@@ -10,7 +10,7 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 {
     // Mảng chứa tất cả các ItemObject (vật phẩm) bạn đã tạo ra trong Project.
     // Unity có thể hiển thị và lưu trữ mảng (Array) này một cách bình thường.
-    public ItemObject[] Items;
+    public ItemObject[] ItemObjects;
 
     // Dictionary để tra cứu ID của một vật phẩm cực nhanh.
     // Key: ItemObject (Vật phẩm) | Value: int (Số ID tương ứng).
@@ -21,11 +21,11 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     {
         // Khởi tạo lại Dictionary và đổ dữ liệu từ mảng 'item' vào để sử dụng trong lúc chơi.
         // GetItem = new Dictionary<int, ItemObject>();
-        for (int i = 0; i < Items.Length; i++)
+        for (int i = 0; i < ItemObjects.Length; i++)
         {
             // Gán ID cho vật phẩm dựa trên vị trí (chỉ số i) của nó trong mảng.
-            if (Items[i].data.Id != i)
-            Items[i].data.Id = i;
+            if (ItemObjects[i].data.Id != i)
+            ItemObjects[i].data.Id = i;
                 // GetItem.Add(i, Items[i]);
         }
     }

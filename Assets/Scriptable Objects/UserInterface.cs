@@ -19,9 +19,10 @@ public abstract class UserInterface : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < inventory.Container.Items.Length; i++)
+        for (int i = 0; i < inventory.GetSlots.Length; i++)
         {
-            inventory.Container.Items[i].parent  = this;
+            inventory.GetSlots[i].parent  = this;
+            inventory.GetSlots[i].OnAfterUpdate += OnSlotUpdate;
         }
         // Khi game bắt đầu, vẽ rương đồ dựa trên dữ liệu có sẵn
         CreateSlot(); 
@@ -29,10 +30,29 @@ public abstract class UserInterface : MonoBehaviour
         AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject);});
     }
 
-    void Update()
+    private void OnSlotUpdate(InventorySlot _slot)
     {
-        slotsOnInterface.UpdateSlotDisplay();
+        if(_slot.item.Id >= 0) // Nếu ô có vật phẩm
+            {
+                // 1. Hiển thị hình ảnh từ Database dựa trên ID
+                _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.ItemObject.uiDisplay;
+                // 2. Hiện màu sắc (Alpha = 1)
+                _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1,1,1,1);
+                // 3. Hiện số lượng (nếu = 1 thì ẩn chữ số đi cho đẹp)
+                _slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = _slot.amount == 1 ? "" : _slot.amount.ToString("n0");
+            }
+            else // Nếu ô trống (ID = -1)
+            {
+                // Ẩn hình ảnh và làm mờ màu sắc (Alpha = 0)
+                _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1,1,1,0);
+                _slot.slotDisplay.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            }
     }
+
+    // void Update()
+    // {
+    //     slotsOnInterface.UpdateSlotDisplay();
+    // }
 
     // Hàm khởi tạo giao diện rương đồ lần đầu
     public abstract void CreateSlot();

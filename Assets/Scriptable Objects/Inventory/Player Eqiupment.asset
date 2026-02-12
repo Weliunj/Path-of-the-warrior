@@ -15,52 +15,52 @@ MonoBehaviour:
   savePath: 
   database: {fileID: 11400000, guid: 2d05375c69d09704684b3057f617f835, type: 2}
   Container:
-    Items:
+    Slots:
     - AllowedItems: 01000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 02000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 03000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 04000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 05000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 06000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 07000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
     - AllowedItems: 08000000
       item:
         Name: 
-        id: -1
+        Id: -1
         buffs: []
       amount: 0
