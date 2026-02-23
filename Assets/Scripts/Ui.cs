@@ -1,33 +1,89 @@
 using UnityEngine;
-using TMPro; // Thêm namespace này để sử dụng TextMeshProUGUI
+using TMPro;
+using UnityEngine.UI;
 
 public class Ui : MonoBehaviour
 {
-    // Singleton instance để các script khác có thể dễ dàng truy cập
     public static Ui Instance { get; private set; }
 
     [Header("UI Elements")]
-    public TextMeshProUGUI itemDescriptionText; // Tham chiếu đến Text UI để hiển thị mô tả
+    public TextMeshProUGUI itemDescriptionText;
+    
+    [Header("Vitals UI")]
+    public Slider hpSlider;
+    public Slider staminaSlider;
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI staminaText;
+
+    [Header("Managers & Panels")]
+    public PlayerManager manager;
+    public RectTransform mainUiRect;      
+    public RectTransform inventoryUiRect; 
+
+    private bool isInventoryOpen = false;
 
     void Awake()
     {
-        // Đảm bảo chỉ có một instance của Ui trong scene
-        if (Instance != null && Instance != this)
+        if (Instance != null && Instance != this) { Destroy(gameObject); }
+        else { Instance = this; }
+    }
+
+    void Start()
+    {
+        hpSlider.maxValue = manager.maxHealth;
+        staminaSlider.maxValue = manager.maxStamina;
+        
+        // Khởi tạo trạng thái ban đầu: Đóng túi đồ, khóa chuột
+        isInventoryOpen = false;
+        ToggleInventory(false); 
+    }
+
+    public void Update()
+    {
+        hpSlider.value = manager.currentHealth;
+        staminaSlider.value = manager.currentStamina;
+        hpText.text = $"Hp: {manager.currentHealth} / {manager.maxHealth}";
+        staminaText.text = $"Stamina: {manager.currentStamina} / {manager.maxStamina}";
+
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
+            isInventoryOpen = !isInventoryOpen;
+            ToggleInventory(isInventoryOpen);
         }
     }
 
-    // Phương thức để cập nhật text mô tả vật phẩm
+    private void ToggleInventory(bool isOpen)
+    {
+        if (isOpen)
+        {
+            // --- XỬ LÝ VỊ TRÍ UI ---
+            mainUiRect.anchoredPosition = new Vector2(0, 1200); 
+            inventoryUiRect.anchoredPosition = new Vector2(0, 0);
+            
+            // --- MỞ KHÓA CHUỘT ---
+            Cursor.visible = true;                          // Hiện con trỏ chuột
+            Cursor.lockState = CursorLockMode.None;         // Cho phép chuột di chuyển tự do khỏi tâm màn hình
+            
+            // Nếu bạn muốn dừng thời gian khi mở túi đồ:
+            // Time.timeScale = 0; 
+        }
+        else
+        {
+            // --- XỬ LÝ VỊ TRÍ UI ---
+            mainUiRect.anchoredPosition = new Vector2(0, 0);
+            inventoryUiRect.anchoredPosition = new Vector2(0, 1200); 
+            
+            // --- KHÓA CHUỘT ---
+            Cursor.visible = false;                         // Ẩn con trỏ chuột
+            Cursor.lockState = CursorLockMode.Locked;       // Khóa chuột vào giữa màn hình (để xoay Camera)
+            
+            // Trả lại thời gian bình thường:
+            // Time.timeScale = 1;
+        }
+    }
+
     public void SetItemDescription(string description)
     {
-        if (itemDescriptionText != null)
-        {
-            itemDescriptionText.text = description;
-        }
+        if (itemDescriptionText != null) itemDescriptionText.text = description;
     }
 }

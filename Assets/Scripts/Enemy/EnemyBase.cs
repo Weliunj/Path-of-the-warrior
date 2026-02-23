@@ -17,7 +17,14 @@ public class EnemyBase : MonoBehaviour
     // ==================== THÀNH PHẦN CƠ BẢN ====================
     protected NavMeshAgent agent;   
     protected GameObject player;    
-    protected Animator animator;    
+    protected Animator animator;
+    public PlayerHealth playerManager; // optional reference for damage calculations
+
+    [Header("HP")]
+    public int maxHealth = 200;
+    public int currentHealth;
+    public bool isDead = false;
+    private bool deathTriggered = false; // ensure we trigger death once
 
     [Header("Movement Stats")]
     public float Movespeed = 3f;      
@@ -82,6 +89,8 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        playerManager = FindFirstObjectByType<PlayerHealth>();
+        currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag("Player");
         wanderTimer = wanderWaitTime; 
         currentState = State.Idle;
@@ -104,6 +113,31 @@ public class EnemyBase : MonoBehaviour
         HandleState();      
         ExecuteLogic();     
         UpdateAnimation();  
+    }
+
+    // Default damage handler: applies damage to attached Health if present.
+    public virtual void TakeDamage(float amount)
+    {
+        Health h = GetComponent<Health>();
+        if (h == null) h = GetComponentInChildren<Health>();
+        if (h == null)
+            return;
+
+        h.ExecuteDamage(amount);
+
+        // If health reached zero, trigger death once here
+        if (!deathTriggered && h.currentHealth <= 0f)
+        {
+            deathTriggered = true;
+            isDead = true;
+            if (animator != null)
+                animator.SetTrigger("Died");
+            // destroy object (or parent) after 1.5s to allow animation to play
+            if (transform.parent != null)
+                Destroy(transform.parent.gameObject, 1.5f);
+            else
+                Destroy(gameObject, 1.5f);
+        }
     }
 
     void HandleState()
@@ -144,7 +178,7 @@ public class EnemyBase : MonoBehaviour
     }
 
     // --- CÁC HÀM DI CHUYỂN (GIỮ NGUYÊN) ---
-    void IdleLogic()
+    public virtual void IdleLogic()
     {
         if (IdlePos == null) return;
         agent.speed = Movespeed;
@@ -153,7 +187,7 @@ public class EnemyBase : MonoBehaviour
         else { agent.isStopped = false; agent.SetDestination(IdlePos.transform.position); }
     }
 
-    void WanderLogic()
+    public virtual void WanderLogic()
     {
         if (WanderPos == null) return;
         agent.speed = Movespeed;
@@ -165,7 +199,7 @@ public class EnemyBase : MonoBehaviour
         else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance) { isWaiting = true; agent.isStopped = true; }
     }
 
-    void PatrolLogic()
+    public virtual void PatrolLogic()
     {
         if (patrolWaypoints == null || patrolWaypoints.Count == 0) return;
         agent.speed = Movespeed;
@@ -178,7 +212,7 @@ public class EnemyBase : MonoBehaviour
         else if (!agent.hasPath) { agent.isStopped = false; agent.SetDestination(patrolWaypoints[currentWaypointIndex].position); }
     }
 
-    void ChaseLogic()
+    public virtual void ChaseLogic()
     {
         agent.isStopped = false;
         agent.speed = Sprintspeed;
@@ -261,6 +295,31 @@ public class EnemyBase : MonoBehaviour
         if (animator == null) return;
         float target = (currentState == State.Chase) ? 1f : (agent.isStopped ? 0f : 0.5f);
         animator.SetFloat("MotionSpeed", Mathf.Lerp(animator.GetFloat("MotionSpeed"), target, Time.deltaTime * 10f));
+    }
+
+    private System.Collections.IEnumerator DeactivateParentAfterAnimation()
+    {
+        if (animator != null)
+        {
+            // Wait until the current animation state finishes playing (or up to 5 seconds)
+            float timeout = 5f;
+            float timer = 0f;
+            // Try to get animation length from current animator state
+            while (timer < timeout)
+            {
+                var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Died") && stateInfo.normalizedTime >= 1f)
+                    break;
+                timer += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        // Deactivate parent GameObject (one level up)
+        if (transform.parent != null)
+            transform.parent.gameObject.SetActive(false);
+        else
+            gameObject.SetActive(false);
     }
 
     private void OnDrawGizmos()

@@ -8,6 +8,7 @@ public class ProjectileBase : MonoBehaviour
 {
     [Header("Cấu hình chung")] // General Configuration
     public VisualEffect explode;
+    public PlayerHealth playerManager; // Reference to PlayerManager for damage calculations
     public float speed = 20f;
     public float damage = 10f;
     public float lifeTime = 3f;
@@ -29,6 +30,7 @@ public class ProjectileBase : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        playerManager = FindFirstObjectByType<PlayerHealth>();
         explode = GetComponent<VisualEffect>();
         timer = lifeTime;
         rb.useGravity = useGravity;
@@ -53,21 +55,15 @@ public class ProjectileBase : MonoBehaviour
     // Xử lý va chạm
     // Collision handling
     protected virtual void OnTriggerEnter(Collider other)
-{
-    if (other.CompareTag("Player"))
-    {  
-        // 1. Tạo hiệu ứng nổ tại vị trí va chạm
-        // Nên lấy từ một Pool riêng cho VFX để tối ưu
-        if (explode != null)
+    {
+        if (other.CompareTag("Player"))
         {
+            playerManager.ExecuteDamage(damage);
         }
 
-        Debug.Log($"Đã trúng {other.name} gây {damage} sát thương");
+        // 2. Mũi tên biến mất và quay về Pool
+        Deactivate();
     }
-
-    // 2. Mũi tên biến mất và quay về Pool
-    Deactivate();
-}
 
     protected void Deactivate()
     {

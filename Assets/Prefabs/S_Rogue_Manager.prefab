@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 5124484807995896187}
   - component: {fileID: 21789114646429541}
   - component: {fileID: 4178446175775624464}
+  - component: {fileID: 1364695710619348797}
   m_Layer: 0
   m_Name: Skeleton_Rogue
   m_TagString: Untagged
@@ -269,6 +270,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RogueSkeleton
   selectedMode: 0
   currentState: 0
+  maxHealth: 200
+  currentHealth: 0
+  isDead: 0
   Movespeed: 3
   Sprintspeed: 6
   attackDistance: 3.3
@@ -367,6 +371,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!114 &1364695710619348797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833637466797094757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d287c604418ec8478d09bd987243572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
+  healthBar: {fileID: 0}
 --- !u!1 &1111574050283744132
 GameObject:
   m_ObjectHideFlags: 0

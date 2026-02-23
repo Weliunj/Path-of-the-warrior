@@ -1877,6 +1877,7 @@ GameObject:
   - component: {fileID: 5354842750922120105}
   - component: {fileID: 5389213758625658492}
   - component: {fileID: 3437493950593397549}
+  - component: {fileID: 7676273118788707281}
   m_Layer: 11
   m_Name: Skeleton_Warrior
   m_TagString: Untagged
@@ -1945,6 +1946,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WarriorSkeleton
   selectedMode: 0
   currentState: 0
+  maxHealth: 100
+  currentHealth: 0
+  isDead: 0
   Movespeed: 3
   Sprintspeed: 6
   attackDistance: 4
@@ -1971,8 +1975,8 @@ MonoBehaviour:
   atk2Dmg: 40
   atkcd: 4
   weaponCollider: {fileID: 2842438932574749479}
-  blockChance: 30
-  blockDuration: 1.5
+  blockChance: 10
+  blockDuration: 2
   damageReduction: 0.5
   blockCD: 5
 --- !u!136 &5354842750922120105
@@ -2047,6 +2051,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!114 &7676273118788707281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940230983320819267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d287c604418ec8478d09bd987243572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
+  healthBar: {fileID: 0}
 --- !u!1 &7953200596803597812
 GameObject:
   m_ObjectHideFlags: 0

@@ -1130,6 +1130,7 @@ GameObject:
   - component: {fileID: 84798172086596676}
   - component: {fileID: 1778104998189468913}
   - component: {fileID: 7972429909710237269}
+  - component: {fileID: 8100552059979619642}
   m_Layer: 11
   m_Name: Skeleton_Mage
   m_TagString: Untagged
@@ -1198,6 +1199,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MageSkeleton
   selectedMode: 0
   currentState: 4
+  maxHealth: 200
+  currentHealth: 0
+  isDead: 0
   Movespeed: 3
   Sprintspeed: 6
   attackDistance: 15.4
@@ -1297,6 +1301,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
+--- !u!114 &8100552059979619642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4965956694097048825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d287c604418ec8478d09bd987243572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
+  currentHealth: 0
+  healthBar: {fileID: 0}
 --- !u!1 &5056619916478718407
 GameObject:
   m_ObjectHideFlags: 0

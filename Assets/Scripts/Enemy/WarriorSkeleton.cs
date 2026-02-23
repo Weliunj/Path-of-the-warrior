@@ -4,17 +4,17 @@ using UnityEngine;
 public class WarriorSkeleton : EnemyBase
 {
     [Header("Cấu hình Tấn công (Chậm & Mạnh)")]
-    public float atk1Dmg = 35f; 
-    public float atk2Dmg = 50f; // Đòn 2 cực mạnh
-    public float atkcd = 3.0f;  // Thời gian hồi chiêu lâu
+    public float atk1Dmg = 35f;
+    public float atk2Dmg = 50f;
+    public float atkcd = 3.0f;
     public Collider weaponCollider;
 
-    [Header("Cấu hình Đỡ đòn (Block Trigger)")]
+    [Header("Cấu hình Đỡ đòn (Block)")]
     [Range(0, 100)]
-    public float blockChance = 25f;    
-    public float blockDuration = 1.0f; // Thời gian "cứng" khi đang diễn anim block
-    public float damageReduction = 0.7f; // Giảm 70% sát thương (Warrior thủ tốt hơn)
-    public float blockCD = 4f;
+    public float blockChance = 30f;    // Tỉ lệ %
+    public float blockDuration = 1.0f; 
+    public float damageReduction = 0.7f; // Giảm 70% sát thương
+    public float blockCD = 5f;
 
     private bool isAtking = false;
     private bool isBlocking = false;
@@ -30,28 +30,53 @@ public class WarriorSkeleton : EnemyBase
         if (weaponCollider != null) weaponCollider.enabled = false;
     }
 
+    protected override void Update()
+    {
+        // Chạy logic cooldown của lớp con
+        if (currentAtkCd > 0f) currentAtkCd -= Time.deltaTime;
+        if (currentBlockCd > 0f) currentBlockCd -= Time.deltaTime;
+
+        // Gọi Update của lớp cha (EnemyBase) để chạy Vision và State Machine
+        base.Update();
+    }
+
+    // --- LOGIC BLOCK ĐÃ CÂN BẰNG ---
     public override void LookAtPlayer()
     {
         base.LookAtPlayer();
+        if (isDead) return;
 
-        // Đếm hồi chiêu
-        if (currentAtkCd > 0) currentAtkCd -= Time.deltaTime;
-        if (currentBlockCd > 0) currentBlockCd -= Time.deltaTime;
-
-        // Ưu tiên Block khi ở trạng thái Idle và ngẫu nhiên trúng tỉ lệ
-        if (currentBlockCd <= 0 && !isAtking && !isBlocking && currentState == State.Idle)
+        // Chỉ kiểm tra Block khi hết CD và ĐANG KHÔNG THỰC HIỆN HÀNH ĐỘNG KHÁC
+        if (currentBlockCd <= 0 && !isAtking && !isBlocking)
         {
-            if (Random.Range(0, 100) < blockChance)
+            // QUAN TRỌNG: Ngay khi vào đây, ta bắt đầu hồi chiêu một chút 
+            // để quái không kiểm tra Random liên tục mỗi frame
+            currentBlockCd = 1.0f; 
+
+            if (Random.Range(0f, 100f) < blockChance)
             {
                 StartCoroutine(BlockRoutine());
-                return;
+                return; 
             }
         }
 
-        // Tấn công ngẫu nhiên 2 đòn
+        // Tấn công
         if (currentAtkCd <= 0 && !isAtking && !isBlocking && currentState == State.Atk)
         {
             StartAtk();
+        }
+    }
+
+    public override void IdleLogic()
+    {
+        base.IdleLogic();
+        // Cho phép quái thỉnh thoảng đứng thủ khi đang đi tuần/idle
+        if (currentBlockCd <= 0 && !isAtking && !isBlocking)
+        {
+            if (Random.Range(0f, 100f) < blockChance * 0.5f) // Giảm tỉ lệ khi idle để đỡ bị spam
+            {
+                StartCoroutine(BlockRoutine());
+            }
         }
     }
 
@@ -61,7 +86,6 @@ public class WarriorSkeleton : EnemyBase
         hasDealtDamage = false;
         currentAtkCd = atkcd;
 
-        // Random giữa Atk1 và Atk2
         int randomAtk = Random.Range(0, 2);
         if (randomAtk == 0)
         {
@@ -75,44 +99,75 @@ public class WarriorSkeleton : EnemyBase
         }
     }
 
+    // --- LOGIC NHẬN SÁT THƯƠNG (OVERRIDE) ---
+    public override void TakeDamage(float incomingDamage)
+    {
+        float finalDamage = incomingDamage;
+
+        // Nếu trúng đòn mà chưa kịp block chủ động, thử phản xạ block (Reactive Block)
+        if (!isBlocking && currentBlockCd <= 0f)
+        {
+            if (Random.Range(0f, 100f) < blockChance)
+            {
+                finalDamage *= (1f - damageReduction);
+                Debug.Log($"<color=blue>Warrior Phản xạ Block!</color> Giảm còn: {finalDamage}");
+                StartCoroutine(HitBlockRoutine(blockDuration));
+                currentBlockCd = blockCD;
+            }
+        }
+        else if (isBlocking)
+        {
+            // Đang thủ sẵn (Proactive Block)
+            finalDamage *= (1f - damageReduction);
+            Debug.Log($"<color=cyan>Warrior Đỡ đòn thành công!</color> Giảm còn: {finalDamage}");
+        }
+
+        // Gọi hàm trừ máu và xử lý chết từ lớp cha
+        base.TakeDamage(finalDamage);
+    }
+
     // --- ANIMATION EVENTS ---
-    public void EnableWeapon() 
-    {
-        if (weaponCollider != null) weaponCollider.enabled = true;
-    }
+    public void EnableWeapon() { if (weaponCollider != null) weaponCollider.enabled = true; }
+    public void DisableWeapon() { if (weaponCollider != null) weaponCollider.enabled = false; isAtking = false; }
 
-    public void DisableWeapon() 
-    {
-        if (weaponCollider != null) weaponCollider.enabled = false;
-        isAtking = false;
-    }
-
-    // --- LOGIC BLOCK (TRIGGER) ---
+    // --- COROUTINES ---
     IEnumerator BlockRoutine()
     {
         isBlocking = true;
-        currentBlockCd = blockCD;
+        currentBlockCd = blockCD; 
 
-        animator.SetTrigger("Block"); // Sử dụng Trigger thay vì Bool
+        // Dừng quái lại khi đang thủ
+        if(agent != null) agent.isStopped = true;
+
+        animator.SetBool("Block", true);
         
-        // Warrior sẽ ở trạng thái "Blocking" trong suốt thời gian diễn anim
         yield return new WaitForSeconds(blockDuration);
+
+        animator.SetBool("Block", false);
+        
+        // GIẢI VÂY: Cho phép quái di chuyển tiếp
+        if(agent != null && !isDead) 
+        {
+            agent.isStopped = false;
+        }
 
         isBlocking = false;
     }
 
-    public void TakeDamage(float incomingDamage)
+    IEnumerator HitBlockRoutine(float duration)
     {
-        float finalDamage = incomingDamage;
+        isBlocking = true;
+        animator.SetBool("Block", true);
+        
+        // Làm chậm quái khi bị đánh trúng lúc đang đỡ
+        float oldSpeed = agent.speed;
+        agent.speed *= 0.2f;
 
-        if (isBlocking)
-        {
-            finalDamage *= (1 - damageReduction);
-            Debug.Log($"Warrior đã Block! Giảm từ {incomingDamage} xuống {finalDamage}");
-            // Bạn có thể kích hoạt hiệu ứng âm thanh "Keng" ở đây
-        }
+        yield return new WaitForSeconds(duration);
 
-        // Trừ máu vào logic Health của bạn ở đây
+        agent.speed = oldSpeed;
+        animator.SetBool("Block", false);
+        isBlocking = false;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -121,9 +176,8 @@ public class WarriorSkeleton : EnemyBase
 
         if (collision.CompareTag("Player"))
         {
-            Debug.Log($"Warrior chém trúng! Sát thương: {currentAtkDmg}");
+            playerManager.ExecuteDamage(currentAtkDmg);
             hasDealtDamage = true;
-            // collision.GetComponent<PlayerHealth>()?.TakeDamage(currentAtkDmg);
             if (weaponCollider != null) weaponCollider.enabled = false;
         }
     }

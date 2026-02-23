@@ -103,6 +103,67 @@ public abstract class UserInterface : MonoBehaviour
             SetDescriptionText(""); // Nếu click vào slot trống, xóa mô tả
         }
     }
+
+    // New: handle pointer click event so we can detect right-clicks
+    public void OnPointerClick(GameObject obj, BaseEventData data)
+    {
+        // Show description as before
+        OnClick(obj);
+
+        // Only proceed if slot has an item
+        if (!slotsOnInterface.ContainsKey(obj) || slotsOnInterface[obj].item.Id < 0) return;
+
+        var ped = data as PointerEventData;
+        if (ped == null) return;
+
+        // Right mouse button = use/consume
+        if (ped.button == PointerEventData.InputButton.Right)
+        {
+            InventorySlot slot = slotsOnInterface[obj];
+            ItemObject itemObj = slot.ItemObject;
+            if (itemObj == null) return;
+
+            // Only consume Food type here
+            if (itemObj.type == ItemType.Food)
+            {
+                // Apply buffs from the Item (simple behaviour)
+                for (int i = 0; i < slot.item.buffs.Length; i++)
+                {
+                    var buff = slot.item.buffs[i];
+                    // Health buff
+                    if (buff.atribute == Atributes.Health)
+                    {
+                        var pm = FindObjectOfType<PlayerHealth>();
+                        if (pm != null && pm.manager != null)
+                        {
+                            pm.manager.currentHealth = Mathf.Min(pm.manager.maxHealth, pm.manager.currentHealth + buff.value);
+                        }
+                    }
+                    // Stamina buff
+                    else if (buff.atribute == Atributes.Stamina)
+                    {
+                        var pm = FindObjectOfType<PlayerHealth>();
+                        if (pm != null && pm.manager != null)
+                        {
+                            pm.manager.currentStamina = Mathf.Min(pm.manager.maxStamina, pm.manager.currentStamina + buff.value);
+                        }
+                    }
+                    // (Other buff types can be added simply here)
+                }
+
+                // Decrease amount by 1 (or remove item)
+                if (slot.ItemObject.stackable)
+                {
+                    slot.AddAmount(-1);
+                    if (slot.amount <= 0) slot.RemoveItem();
+                }
+                else
+                {
+                    slot.RemoveItem();
+                }
+            }
+        }
+    }
     public void OnEnterInterface(GameObject obj)
     {
         MouseData.interfaceMouseIsOver = obj.GetComponent<UserInterface>();

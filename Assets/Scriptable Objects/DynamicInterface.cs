@@ -16,7 +16,7 @@ public class DynamicInterface : UserInterface
             AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj);});
             AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj);});
             AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj);});
-            AddEvent(obj, EventTriggerType.PointerClick, delegate { OnClick(obj);}); // Thêm sự kiện click
+            AddEvent(obj, EventTriggerType.PointerClick, delegate (BaseEventData data) { OnPointerClick(obj, data);}); // forward event data
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj);});
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj);});
 

@@ -20,3 +20,12 @@ MonoBehaviour:
   Gravity: -25
   JumpTimeout: 0.1
   FallTimeout: 0.15
+  baseAtk: 10
+  atk2Multiplier: 1.2
+  atk3Multiplier: 1.6
+  maxHealth: 282.1
+  currentHealth: 282.1
+  maxStamina: 100
+  currentStamina: 100
+  defensePercent: 0
+  blockReductionPercent: 0.5

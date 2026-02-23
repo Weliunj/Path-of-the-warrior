@@ -74,15 +74,12 @@ public class RogueSkeleton : EnemyBase
 
     private void OnTriggerEnter(Collider collision)
     {
-        // Debug kiểm tra xem có va chạm bất cứ thứ gì không
-        // Debug.Log("Va chạm với: " + collision.name); 
-
         if (!isAtking || hasDealtDamage) return;
 
         if (collision.CompareTag("Player"))
         {
-            Debug.Log($"KIẾM TRÚNG PLAYER! Sát thương gây ra: {currentAtkDmg}");
-            hasDealtDamage = true; 
+            playerManager.ExecuteDamage(currentAtkDmg);
+            hasDealtDamage = true;
             if (weaponCollider != null) weaponCollider.enabled = false;
         }
     }
