@@ -7,11 +7,19 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+public enum InterfaceType
+{
+    Inventory,
+    Equipment,
+    Chest
+}
+
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
     public string savePath;           // Tên file lưu (ví dụ: /inventory.save)
     public ItemDatabaseObject database; // Cơ sở dữ liệu để tra cứu ID vật phẩm
+    public InterfaceType type;
     public Inventory Container;
     public InventorySlot[] GetSlots { get { return Container.Slots; }}
 
@@ -104,25 +112,33 @@ public class InventoryObject : ScriptableObject
     [ContextMenu("Save")] // Chuột phải vào Script trong Inspector để hiện nút Save
     public void Save()
     {
-        // Construct the full file path safely
+        // Kiểm tra nếu savePath trống thì gán tên mặc định để tránh lỗi Folder Access
+        if (string.IsNullOrEmpty(savePath))
+        {
+            savePath = "default_inventory.save";
+        }
+
         string fullPath = Path.Combine(Application.persistentDataPath, savePath);
-        // Get the directory path from the full file path
         string directoryPath = Path.GetDirectoryName(fullPath);
 
-        // Ensure the directory exists before trying to create the file
         if (!Directory.Exists(directoryPath))
         {
             Directory.CreateDirectory(directoryPath);
         }
 
-        // Tạo bộ mã hóa nhị phân
+        // Kiểm tra xem fullPath có thực sự trỏ tới một file không (không phải thư mục)
+        if (Directory.Exists(fullPath))
+        {
+            Debug.LogError("SavePath đang trỏ tới một thư mục hiện có! Hãy đổi tên file trong Inspector.");
+            return;
+        }
+
         IFormatter formatter = new BinaryFormatter();
-        // Tạo luồng dữ liệu (Stream) trỏ đến file cần tạo
-        Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
-        // Mã hóa toàn bộ đối tượng Container và đẩy vào file
-        formatter.Serialize(stream, Container);
-        // Đóng luồng để hoàn tất ghi file
-        stream.Close();
+        using (Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+        {
+            formatter.Serialize(stream, Container);
+        }
+        
         Debug.Log("Đã lưu tại: " + fullPath);
     }
     [ContextMenu("Load")]   

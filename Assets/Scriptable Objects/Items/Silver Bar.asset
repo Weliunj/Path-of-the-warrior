@@ -15,7 +15,7 @@ MonoBehaviour:
   uiDisplay: {fileID: 1174803004, guid: 63a6986070555ae47a1df8508664cbc3, type: 3}
   stackable: 1
   type: 9
-  description: 
+  description: Resource
   data:
     Name: 
     Id: 14

@@ -15,8 +15,16 @@ MonoBehaviour:
   uiDisplay: {fileID: -1454192701, guid: 03ad9fb7d96e0dc4d87136e7d72854ff, type: 3}
   stackable: 1
   type: 0
-  description: 
+  description: Hoi phuc 20 - 30 Hp, 10 - 20 Stam
   data:
     Name: 
     Id: 0
-    buffs: []
+    buffs:
+    - atribute: 4
+      value: 0
+      min: 20
+      max: 30
+    - atribute: 1
+      value: 0
+      min: 10
+      max: 20

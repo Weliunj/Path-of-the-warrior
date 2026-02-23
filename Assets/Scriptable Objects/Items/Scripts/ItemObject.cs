@@ -6,7 +6,11 @@ public enum ItemType
 }
 public enum Atributes
 {
-    Agility, Intellect, stamina, strngth 
+    MoveSpeed,    // Thay cho Agility (Tập trung vào tốc độ di chuyển)
+    Stamina,      // Giữ nguyên hoặc viết hoa (Sức bền/Thể lực)
+    Defense,      // Thay cho Intellect (Khả năng phòng thủ/Giảm sát thương)
+    Strength,      // Viết lại cho đúng chính tả (Sức mạnh vật lý)
+    Health,       // Thay cho Vitality (Máu/HP)
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName ="Inventory System/Items/item")]
@@ -56,7 +60,7 @@ public class Item
 }
 
 [System.Serializable]
-public class ItemBuff
+public class ItemBuff : IModifiers
 {
     public Atributes atribute;
     public int value;
@@ -69,6 +73,12 @@ public class ItemBuff
         max = _max; 
         GenerateValue();
     }
+
+    public void AddValue(ref int baseValue)
+    {
+        baseValue += value;
+    }
+
     public void GenerateValue()
     {
         value = UnityEngine.Random.Range(min, max);

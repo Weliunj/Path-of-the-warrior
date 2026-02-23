@@ -59,19 +59,49 @@ public abstract class UserInterface : MonoBehaviour
 
     protected void  AddEvent(GameObject obj, EventTriggerType type, UnityAction<BaseEventData> action)
     {
-        EventTrigger trigger = obj.GetComponent<EventTrigger>() ?? obj.AddComponent<EventTrigger>();
+        EventTrigger trigger = obj.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = obj.AddComponent<EventTrigger>();
+        }
         var eventTrigger = new EventTrigger.Entry();
         eventTrigger.eventID = type;
         eventTrigger.callback.AddListener(action);
         trigger.triggers.Add(eventTrigger);
     }
+
+    private void SetDescriptionText(string text) // Phương thức này giờ sẽ gọi Ui.Instance
+    {
+        Ui.Instance?.SetItemDescription(text); // Sử dụng instance Singleton của Ui để cập nhật text
+    }
     public void OnEnter(GameObject obj)
     {
+        // Hiển thị mô tả khi chuột di vào slot
+        if (slotsOnInterface.ContainsKey(obj) && slotsOnInterface[obj].item.Id >= 0)
+        {
+            SetDescriptionText(slotsOnInterface[obj].ItemObject.description);
+        }
         MouseData.slotHoveredOver = obj;
     }
     public void OnExit(GameObject obj)
     {
+        // Xóa mô tả khi chuột rời khỏi slot
+        SetDescriptionText("");
         MouseData.slotHoveredOver = null;
+    }
+    public void OnClick(GameObject obj)
+    {
+        // Hiển thị mô tả khi click vào slot
+        // Nếu đã có mô tả từ OnEnter/OnDragStart, việc click sẽ giữ nguyên mô tả đó.
+        // Nếu không, nó sẽ hiển thị mô tả mới.
+        if (slotsOnInterface.ContainsKey(obj) && slotsOnInterface[obj].item.Id >= 0)
+        {
+            SetDescriptionText(slotsOnInterface[obj].ItemObject.description);
+        }
+        else
+        {
+            SetDescriptionText(""); // Nếu click vào slot trống, xóa mô tả
+        }
     }
     public void OnEnterInterface(GameObject obj)
     {
@@ -79,11 +109,19 @@ public abstract class UserInterface : MonoBehaviour
     }
     public void OnExitInterface(GameObject obj)
     {
+        // Xóa mô tả khi chuột rời khỏi toàn bộ giao diện
+        SetDescriptionText("");
         MouseData.interfaceMouseIsOver = null;
     }
     public void OnDragStart(GameObject obj)
     {
         MouseData.tempItemBeingDragged = CreateTempItem(obj);
+        // Hiển thị mô tả khi bắt đầu kéo
+        if (slotsOnInterface.ContainsKey(obj) && slotsOnInterface[obj].item.Id >= 0)
+        {
+            SetDescriptionText(slotsOnInterface[obj].ItemObject.description);
+        }
+
     }
     public GameObject CreateTempItem(GameObject obj)
     {
@@ -107,9 +145,35 @@ public abstract class UserInterface : MonoBehaviour
     public void OnDragEnd(GameObject obj)
     {
         Destroy(MouseData.tempItemBeingDragged);
+        // Xóa mô tả khi kết thúc kéo
+        SetDescriptionText("");
+
         if(MouseData.interfaceMouseIsOver == null)
         {
-            slotsOnInterface[obj].RemoveItem();
+            // Vật phẩm được kéo ra ngoài giao diện UI, thực hiện thả vào thế giới
+            if (slotsOnInterface.ContainsKey(obj) && slotsOnInterface[obj].item.Id >= 0)
+            {
+                ItemObject itemToDrop = slotsOnInterface[obj].ItemObject;
+                InventorySlot slotToDrop = slotsOnInterface[obj];
+                if (PlayerAtr.Instance != null)
+                {
+                    Debug.Log($"Dropping item: {slotToDrop.ItemObject?.name} | amount={slotToDrop.amount} | stackable={slotToDrop.ItemObject?.stackable}");
+                    // Nếu vật phẩm có thể stack thì chỉ thả 1 cái, giảm 1 số lượng
+                    if (slotToDrop.ItemObject != null && slotToDrop.ItemObject.stackable)
+                    {
+                        PlayerAtr.Instance.DropItem(slotToDrop.ItemObject, 1);
+                        slotToDrop.AddAmount(-1);
+                        if (slotToDrop.amount <= 0)
+                            slotToDrop.RemoveItem();
+                    }
+                    else
+                    {
+                        // Không stack => thả toàn bộ (hoặc item đơn lẻ)
+                        PlayerAtr.Instance.DropItem(slotToDrop.ItemObject, slotToDrop.amount);
+                        slotToDrop.RemoveItem();
+                    }
+                }
+            }
             return;
         }
         if (MouseData.slotHoveredOver)

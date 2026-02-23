@@ -15,8 +15,12 @@ MonoBehaviour:
   uiDisplay: {fileID: -607650966, guid: 4dca051027b1cc445ad914f4c35db677, type: 3}
   stackable: 0
   type: 1
-  description: 
+  description: Giap
   data:
     Name: 
     Id: 9
-    buffs: []
+    buffs:
+    - atribute: 2
+      value: 0
+      min: 20
+      max: 40
