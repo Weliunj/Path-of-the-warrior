@@ -6,9 +6,9 @@ public class PlayerManager : ScriptableObject
     [Header("MoveSettings")]
     [Tooltip("Tốc độ di chuyển đi bộ bình thường (m/s)")]
     public float MoveSpeed = 4.0f;
-
+    
     [Tooltip("Tốc độ khi chạy nhanh (m/s)")]
-    public float SprintSpeed = 6.0f;
+    public float SprintSpeed = 9.0f;
 
     [Tooltip("Tốc độ xoay camera của nhân vật")]
     public float RotationSpeed = 1.0f;
@@ -19,10 +19,10 @@ public class PlayerManager : ScriptableObject
 
     [Header("JumpAndGravity")]
     [Tooltip("Độ cao tối đa khi nhân vật nhảy")]
-    public float JumpHeight = 1.2f;
+    public float JumpHeight = 1.4f;
 
     [Tooltip("Giá trị trọng lực riêng của nhân vật (Mặc định của Unity là -9.81)")]
-    public float Gravity = -15.0f;
+    public float Gravity = -25.0f;
 
     [Tooltip("Thời gian chờ tối thiểu giữa 2 lần nhảy")]
     public float JumpTimeout = 0.1f;
@@ -35,7 +35,7 @@ public class PlayerManager : ScriptableObject
     [Tooltip("Multiplier applied to baseAtk for the 2nd combo hit (default 1.2 = +20%)")]
     public float atk2Multiplier = 1.2f;
     [Tooltip("Multiplier applied to atk2 for the 3rd combo hit (default 1.2 = +20%)")]
-    public float atk3Multiplier = 1.2f;
+    public float atk3Multiplier = 1.6f;
 
     public float Atk1 { get { return baseAtk; } }
     public float Atk2 { get { return baseAtk * atk2Multiplier; } }
@@ -43,13 +43,14 @@ public class PlayerManager : ScriptableObject
 
     [Header("Vitals")]
     [Tooltip("Mức HP tối đa của người chơi")]
-    public float maxHealth = 200f;
+    public float maxHealth = 300f;
     public float currentHealth;
     [Tooltip("Mức Stamina tối đa của người chơi")]
-    public float maxStamina = 100f;
+    public float maxStamina = 200f;
     public float currentStamina;
 
     [Header("Defensive Attributes")]
+    public float armor = 0f;
     [Tooltip("Giảm thêm khi đang block (0..1)")]
     [Range(0f,1f)]
     public float blockReductionPercent = 0.5f;

@@ -268,9 +268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd143de3f80fbe45ae1a1ebed2bdb35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RogueSkeleton
-  selectedMode: 0
+  selectedMode: 1
   currentState: 0
-  maxHealth: 200
+  playerManager: {fileID: 0}
+  maxHealth: 150
   currentHealth: 0
   isDead: 0
   Movespeed: 3
@@ -278,7 +279,7 @@ MonoBehaviour:
   attackDistance: 3.3
   IdlePos: {fileID: 1402849537150045986}
   WanderPos: {fileID: 1402849537150045986}
-  wanderRadius: 10
+  wanderRadius: 75.68
   wanderWaitTime: 3
   patrolWaypoints: []
   waypointWaitTime: 2
@@ -295,8 +296,8 @@ MonoBehaviour:
   obstructLayer:
     serializedVersion: 2
     m_Bits: 4096
-  atk1Dmg: 15
-  atk2Dmg: 25
+  atk1Dmg: 45
+  atk2Dmg: 55
   atkcd: 2.1
   weaponCollider: {fileID: 4091270584854549977}
 --- !u!136 &5124484807995896187
@@ -2099,7 +2100,7 @@ GameObject:
   - component: {fileID: 2999039203621906300}
   m_Layer: 0
   m_Name: S_Rogue_Manager
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

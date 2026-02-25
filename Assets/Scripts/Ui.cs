@@ -6,19 +6,22 @@ public class Ui : MonoBehaviour
 {
     public static Ui Instance { get; private set; }
 
-    [Header("UI Elements")]
-    public TextMeshProUGUI itemDescriptionText;
-    
-    [Header("Vitals UI")]
+    [Header("Player Vitals UI")]
+    public PlayerManager manager;
     public Slider hpSlider;
     public Slider staminaSlider;
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI staminaText;
 
-    [Header("Managers & Panels")]
-    public PlayerManager manager;
+    [Header("Player Stats Text")]
+    public TextMeshProUGUI MovespeedText;
+    public TextMeshProUGUI SprintSpeedText;
+    public TextMeshProUGUI ArmorText;
+
+    [Header("Inventory Settings")]
     public RectTransform mainUiRect;      
     public RectTransform inventoryUiRect; 
+    public TextMeshProUGUI itemDescriptionText;
 
     private bool isInventoryOpen = false;
 
@@ -33,17 +36,14 @@ public class Ui : MonoBehaviour
         hpSlider.maxValue = manager.maxHealth;
         staminaSlider.maxValue = manager.maxStamina;
         
-        // Khởi tạo trạng thái ban đầu: Đóng túi đồ, khóa chuột
+        // Luôn đảm bảo lúc vào game thì túi đồ đóng
         isInventoryOpen = false;
-        ToggleInventory(false); 
+        ToggleInventory(false);
     }
 
-    public void Update()
+    void Update()
     {
-        hpSlider.value = manager.currentHealth;
-        staminaSlider.value = manager.currentStamina;
-        hpText.text = $"Hp: {manager.currentHealth} / {manager.maxHealth}";
-        staminaText.text = $"Stamina: {manager.currentStamina} / {manager.maxStamina}";
+        UpdatePlayerStatsUI();
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -52,33 +52,32 @@ public class Ui : MonoBehaviour
         }
     }
 
+    void UpdatePlayerStatsUI()
+    {
+        hpSlider.value = manager.currentHealth;
+        staminaSlider.value = manager.currentStamina;
+        hpText.text = $"Hp: {Mathf.RoundToInt(manager.currentHealth)} / {manager.maxHealth}";
+        staminaText.text = $"Stamina: {Mathf.RoundToInt(manager.currentStamina)} / {manager.maxStamina}";
+        MovespeedText.text = $"Move: {manager.MoveSpeed:F1}";
+        SprintSpeedText.text = $"Sprint: {manager.SprintSpeed:F1}";
+        ArmorText.text = $"Armor: {manager.armor:F0}";
+    }
+
     private void ToggleInventory(bool isOpen)
     {
         if (isOpen)
         {
-            // --- XỬ LÝ VỊ TRÍ UI ---
             mainUiRect.anchoredPosition = new Vector2(0, 1200); 
             inventoryUiRect.anchoredPosition = new Vector2(0, 0);
-            
-            // --- MỞ KHÓA CHUỘT ---
-            Cursor.visible = true;                          // Hiện con trỏ chuột
-            Cursor.lockState = CursorLockMode.None;         // Cho phép chuột di chuyển tự do khỏi tâm màn hình
-            
-            // Nếu bạn muốn dừng thời gian khi mở túi đồ:
-            // Time.timeScale = 0; 
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         else
         {
-            // --- XỬ LÝ VỊ TRÍ UI ---
             mainUiRect.anchoredPosition = new Vector2(0, 0);
             inventoryUiRect.anchoredPosition = new Vector2(0, 1200); 
-            
-            // --- KHÓA CHUỘT ---
-            Cursor.visible = false;                         // Ẩn con trỏ chuột
-            Cursor.lockState = CursorLockMode.Locked;       // Khóa chuột vào giữa màn hình (để xoay Camera)
-            
-            // Trả lại thời gian bình thường:
-            // Time.timeScale = 1;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

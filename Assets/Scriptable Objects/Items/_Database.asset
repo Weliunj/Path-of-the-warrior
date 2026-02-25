@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabaseObject
   ItemObjects:
   - {fileID: 11400000, guid: d418dffce858e1e4688d398f55472148, type: 2}
+  - {fileID: 11400000, guid: 605272dcc61409046aa7aec977076a8a, type: 2}
   - {fileID: 11400000, guid: 54e4bf3e762d1d946b8f0f9c67a8a09b, type: 2}
   - {fileID: 11400000, guid: 59f8d3919f7eba347bdd8dc78c616d68, type: 2}
   - {fileID: 11400000, guid: c10cd5ea71e0bc84f8f70f83e82421a1, type: 2}
@@ -26,6 +27,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 43f9c99aa2be4174dab14d2ae0f7bcc8, type: 2}
   - {fileID: 11400000, guid: 1ac6284bba8f43245967b0fa0247fe20, type: 2}
   - {fileID: 11400000, guid: c43583b91fb80f0478eac7c5d8797774, type: 2}
+  - {fileID: 11400000, guid: cb28adc508530d746a5c82b1ad7c5df1, type: 2}
+  - {fileID: 11400000, guid: 39c7c4ad37391cf4b88f2cf214fffafe, type: 2}
   - {fileID: 11400000, guid: 375dac7a484210e499bde4fa1c80a73c, type: 2}
   - {fileID: 11400000, guid: 424c4cbdca9970449bd27b2cca97b4f2, type: 2}
   - {fileID: 11400000, guid: 86b410456ed03174b8b202b3923a93b0, type: 2}

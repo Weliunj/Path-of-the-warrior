@@ -43,8 +43,9 @@ MonoBehaviour:
       height: 172
     contents: "\u0110i\u1EC1u khi\u1EC3n t\u1EA7n su\u1EA5t v\xE0 th\u1EDDi gian
       t\u1EA1o h\u1EA1t."
-    theme: Black
+    theme: 
     textSize: Medium
+    colorTheme: 2
   - title: Initizlize
     position:
       serializedVersion: 2
@@ -54,8 +55,9 @@ MonoBehaviour:
       height: 172
     contents: "Thi\u1EBFt l\u1EADp c\xE1c thu\u1ED9c t\xEDnh ban \u0111\u1EA7u khi
       h\u1EA1t v\u1EEBa xu\u1EA5t hi\u1EC7n."
-    theme: Black
+    theme: 
     textSize: Medium
+    colorTheme: 2
   - title: Update
     position:
       serializedVersion: 2
@@ -65,8 +67,9 @@ MonoBehaviour:
       height: 172
     contents: "Thay \u0111\u1ED5i thu\u1ED9c t\xEDnh h\u1EA1t theo th\u1EDDi gian
       th\u1EF1c."
-    theme: Black
+    theme: 
     textSize: Medium
+    colorTheme: 2
   - title: Output
     position:
       serializedVersion: 2
@@ -76,15 +79,16 @@ MonoBehaviour:
       height: 172
     contents: "\u0110\u1ECBnh ngh\u0129a ngo\u1EA1i h\xECnh v\xE0 c\xE1ch render
       c\u1EE7a h\u1EA1t."
-    theme: Black
+    theme: 
     textSize: Medium
+    colorTheme: 2
   categories: []
   uiBounds:
     serializedVersion: 2
     x: 874
     y: 126
     width: 1006
-    height: 2529
+    height: 2527
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,7 +117,7 @@ MonoBehaviour:
   m_CustomAttributes: []
   m_ParameterInfo: []
   m_ImportDependencies: []
-  m_GraphVersion: 18
+  m_GraphVersion: 19
   m_ResourceVersion: 1
   m_SubgraphDependencies: []
   m_CategoryPath: 
@@ -129,10 +133,6 @@ VisualEffectResource:
     m_RendererSettings:
       motionVectorGenerationMode: 0
       shadowCastingMode: 0
-      rayTracingMode: 0
-      receiveShadows: 0
-      reflectionProbeUsage: 0
-      lightProbeUsage: 0
     m_CullingFlags: 3
     m_UpdateMode: 0
     m_PreWarmDeltaTime: 0.05
@@ -701,7 +701,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 4
+      m_SerializableObject: 14
     m_Space: -1
   m_Property:
     name: A
@@ -735,7 +735,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 5
+      m_SerializableObject: 15
     m_Space: -1
   m_Property:
     name: B
@@ -1041,7 +1041,8 @@ MonoBehaviour:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614687}
 --- !u!114 &8926484042661614642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1244,6 +1245,7 @@ MonoBehaviour:
   sortingPriority: 0
   m_SubOutputs:
   - {fileID: 8926484042661614653}
+  useBaseColorMap: 3
   colorMapping: 0
   uvMode: 0
   flipbookLayout: 0
@@ -1730,7 +1732,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 32
+      m_SerializableObject: -15
     m_Space: -1
   m_Property:
     name: Min
@@ -1764,7 +1766,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: -4
+      m_SerializableObject: -30
     m_Space: -1
   m_Property:
     name: Max
@@ -1806,7 +1808,8 @@ MonoBehaviour:
       m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
   m_Direction: 1
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614641}
 --- !u!114 &8926484042661614702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2233,7 +2236,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
+      m_SerializableObject: 0.128
     m_Space: -1
   m_Property:
     name: DirectionBlend
@@ -2940,7 +2943,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 200
+      m_SerializableObject: 1000
     m_Space: -1
   m_Property:
     name: size

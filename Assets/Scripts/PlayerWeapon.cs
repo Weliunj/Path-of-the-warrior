@@ -10,14 +10,33 @@ public class PlayerWeapon : MonoBehaviour
     Player_Combat owner;
     int currentStage = 1;
 
+    public AudioSource[] audioSources;
+    public bool hasplay = false;
+
     void Awake()
     {
         col = GetComponent<Collider>();
         if (col != null) col.isTrigger = true;
     }
 
+    void OnDisable()
+    {
+        if (col != null) col.enabled = false;
+        hitTargets.Clear();
+    }
+
+    void OnDestroy()
+    {
+        // Notify owner to clear any serialized reference so Inspector won't try to draw a destroyed component
+        if (owner != null)
+        {
+            owner.weaponScript = null;
+        }
+    }
+
     public void EnableWeapon(int stage, Player_Combat ownerRef = null)
     {
+        
         currentStage = stage <= 0 ? 1 : stage;
         owner = ownerRef == null ? owner : ownerRef;
         hitTargets.Clear();
@@ -39,11 +58,8 @@ public class PlayerWeapon : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    {   
         if (hitTargets.Count >= maxHitsPerSwing) return;
-        // Require this weapon to be a Sword (by tag or name) to apply sword logic
-        if (!(gameObject.CompareTag("Sword") || gameObject.name.ToLower().Contains("sword"))) return;
-
         // Require this weapon to be a Sword (by tag or name) to apply sword logic
         if (!(gameObject.CompareTag("Sword") || gameObject.name.ToLower().Contains("sword"))) return;
 

@@ -27,6 +27,7 @@ public class Player_Combat : MonoBehaviour
     {
         settings.currentHealth = settings.maxHealth; // Ensure health is initialized
         settings.currentStamina = settings.maxStamina; // Ensure stamina is initialized
+        settings.armor = 20f;
         anim = GetComponentInChildren<Animator>();
         if (weaponScript != null) weaponScript.DisableWeapon();
     }

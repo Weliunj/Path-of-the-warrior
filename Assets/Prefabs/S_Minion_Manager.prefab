@@ -272,13 +272,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323947695516593506}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.043619405, y: 0, z: 0, w: 0.9990483}
+  m_LocalRotation: {x: -0.043608434, y: -0.022404317, z: -0.000978194, w: 0.998797}
   m_LocalPosition: {x: 0, y: 0.97899985, z: 1.0160011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4946626020604072750}
-  m_LocalEulerAnglesHint: {x: -5, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5, y: -2.57, z: 0}
 --- !u!1 &1366722822156972510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 844428527259602229}
   m_Layer: 0
   m_Name: S_Minion_Manager
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1235,8 +1235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb319672892251418574eded6466382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinionSkeletron
-  selectedMode: 0
+  selectedMode: 1
   currentState: 0
+  playerManager: {fileID: 0}
   maxHealth: 200
   currentHealth: 0
   isDead: 0
@@ -1245,7 +1246,7 @@ MonoBehaviour:
   attackDistance: 17.52
   IdlePos: {fileID: 8656440821106620769}
   WanderPos: {fileID: 8656440821106620769}
-  wanderRadius: 14.69
+  wanderRadius: 67.5
   wanderWaitTime: 3
   patrolWaypoints: []
   waypointWaitTime: 2
@@ -1264,7 +1265,7 @@ MonoBehaviour:
     m_Bits: 4096
   projectileTag: Arrow
   firePoint: {fileID: 4463973912048216768}
-  atkDmg: 15
+  atkDmg: 25
   atkcd: 5
 --- !u!136 &4255315580602594278
 CapsuleCollider:

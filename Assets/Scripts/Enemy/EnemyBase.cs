@@ -11,14 +11,14 @@ public class EnemyBase : MonoBehaviour
     public Mode selectedMode; 
 
     [HideInInspector]
-    public enum State { Idle, Wander, Patrol, Chase, Atk }
+    public enum State { Atk, Idle, Wander, Patrol, Chase  }
     public State currentState; 
 
     // ==================== THÀNH PHẦN CƠ BẢN ====================
     protected NavMeshAgent agent;   
     protected GameObject player;    
     protected Animator animator;
-    public PlayerHealth playerManager; // optional reference for damage calculations
+    public PlayerHandleStats playerManager; // optional reference for damage calculations
 
     [Header("HP")]
     public int maxHealth = 200;
@@ -89,11 +89,11 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
-        playerManager = FindFirstObjectByType<PlayerHealth>();
+        playerManager = FindFirstObjectByType<PlayerHandleStats>();
         currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag("Player");
         wanderTimer = wanderWaitTime; 
-        currentState = State.Idle;
+        currentState = State.Atk;
     }
 
     protected virtual void Update()

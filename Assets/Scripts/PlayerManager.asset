@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb150d31e36b20744adfee2f64c74eef, type: 3}
   m_Name: PlayerManager
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
-  SprintSpeed: 14
+  MoveSpeed: 4
+  SprintSpeed: 9
   RotationSpeed: 1
   SpeedChangeRate: 10
   JumpHeight: 1.4
@@ -23,9 +23,9 @@ MonoBehaviour:
   baseAtk: 10
   atk2Multiplier: 1.2
   atk3Multiplier: 1.6
-  maxHealth: 282.1
-  currentHealth: 282.1
-  maxStamina: 100
-  currentStamina: 100
-  defensePercent: 0
-  blockReductionPercent: 0.5
+  maxHealth: 300
+  currentHealth: 300
+  maxStamina: 200
+  currentStamina: 200
+  armor: 0
+  blockReductionPercent: 0.75

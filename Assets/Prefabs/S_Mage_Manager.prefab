@@ -1197,8 +1197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db2884ca2c9cd444a0414191ef8b0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MageSkeleton
-  selectedMode: 0
+  selectedMode: 1
   currentState: 4
+  playerManager: {fileID: 0}
   maxHealth: 200
   currentHealth: 0
   isDead: 0
@@ -1207,7 +1208,7 @@ MonoBehaviour:
   attackDistance: 15.4
   IdlePos: {fileID: 3670445430405902798}
   WanderPos: {fileID: 3670445430405902798}
-  wanderRadius: 10
+  wanderRadius: 73.62
   wanderWaitTime: 3
   patrolWaypoints: []
   waypointWaitTime: 2
@@ -1226,7 +1227,7 @@ MonoBehaviour:
     m_Bits: 4096
   projectileTag: Fireball
   firePoint: {fileID: 6590813492497446238}
-  atkDmg: 25
+  atkDmg: 65
   atkcd: 4
   castDelay: 0.5
 --- !u!136 &84798172086596676
@@ -1506,7 +1507,7 @@ GameObject:
   - component: {fileID: 1102179875587981697}
   m_Layer: 0
   m_Name: S_Mage_Manager
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

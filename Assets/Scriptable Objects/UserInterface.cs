@@ -133,7 +133,7 @@ public abstract class UserInterface : MonoBehaviour
                     // Health buff
                     if (buff.atribute == Atributes.Health)
                     {
-                        var pm = FindObjectOfType<PlayerHealth>();
+                        var pm = FindFirstObjectByType<PlayerHandleStats>();
                         if (pm != null && pm.manager != null)
                         {
                             pm.manager.currentHealth = Mathf.Min(pm.manager.maxHealth, pm.manager.currentHealth + buff.value);
@@ -142,7 +142,7 @@ public abstract class UserInterface : MonoBehaviour
                     // Stamina buff
                     else if (buff.atribute == Atributes.Stamina)
                     {
-                        var pm = FindObjectOfType<PlayerHealth>();
+                        var pm = FindFirstObjectByType<PlayerHandleStats>();
                         if (pm != null && pm.manager != null)
                         {
                             pm.manager.currentStamina = Mathf.Min(pm.manager.maxStamina, pm.manager.currentStamina + buff.value);

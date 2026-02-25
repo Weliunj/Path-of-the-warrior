@@ -22,5 +22,5 @@ MonoBehaviour:
     buffs:
     - atribute: 3
       value: 0
-      min: 5
-      max: 20
+      min: 10
+      max: 100

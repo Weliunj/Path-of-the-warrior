@@ -8,7 +8,7 @@ public class ProjectileBase : MonoBehaviour
 {
     [Header("Cấu hình chung")] // General Configuration
     public VisualEffect explode;
-    public PlayerHealth playerManager; // Reference to PlayerManager for damage calculations
+    public PlayerHandleStats playerManager; // Reference to PlayerManager for damage calculations
     public float speed = 20f;
     public float damage = 10f;
     public float lifeTime = 3f;
@@ -30,7 +30,7 @@ public class ProjectileBase : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        playerManager = FindFirstObjectByType<PlayerHealth>();
+        playerManager = FindFirstObjectByType<PlayerHandleStats>();
         explode = GetComponent<VisualEffect>();
         timer = lifeTime;
         rb.useGravity = useGravity;

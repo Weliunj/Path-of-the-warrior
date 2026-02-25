@@ -20,7 +20,7 @@ MonoBehaviour:
     Name: 
     Id: 4
     buffs:
-    - atribute: 2
+    - atribute: 0
       value: 0
-      min: 20
-      max: 40
+      min: 0
+      max: -50
