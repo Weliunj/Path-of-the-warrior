@@ -15,9 +15,12 @@ public class RogueSkeleton : EnemyBase
     private float currentCdTimer;
     private bool hasDealtDamage = false;
     private float currentAtkDmg;
+    public AudioSource audioSource;
 
     protected override void Start()
     {
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
         base.Start();
         currentCdTimer = atkcd;
         if (weaponCollider != null) weaponCollider.enabled = false;
@@ -78,6 +81,11 @@ public class RogueSkeleton : EnemyBase
 
         if (collision.CompareTag("Player"))
         {
+            animator.SetTrigger("AtkR"); 
+            if(audioSource.isPlaying == false)
+            {
+                audioSource.Play();
+            }
             playerManager.ExecuteDamage(currentAtkDmg);
             hasDealtDamage = true;
             if (weaponCollider != null) weaponCollider.enabled = false;

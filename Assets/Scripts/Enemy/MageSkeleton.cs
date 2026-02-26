@@ -4,6 +4,7 @@ using UnityEngine;
 public class MageSkeleton : EnemyBase
 {
     [Header("Cài đặt Pháp sư")]
+    public AudioSource audioSource;
     public string projectileTag = "Fireball"; // Tag của cầu lửa trong Pool
     public Transform firePoint;               // Vị trí xuất hiện phép thuật
     public float atkDmg = 25f;                // Sát thương phép
@@ -15,6 +16,8 @@ public class MageSkeleton : EnemyBase
 
     protected override void Start()
     {
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
         base.Start();
         currentCdTimer = atkcd; 
     }
@@ -56,7 +59,10 @@ public class MageSkeleton : EnemyBase
                 magic.damage = atkDmg;
             }
         }
-
+        if(audioSource.isPlaying == false)
+        {
+            audioSource.Play();
+        }
         // 4. Reset hồi chiêu và kết thúc trạng thái
         currentCdTimer = atkcd;
         

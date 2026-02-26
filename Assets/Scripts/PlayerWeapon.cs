@@ -5,13 +5,14 @@ using UnityEngine;
 public class PlayerWeapon : MonoBehaviour
 {
     public int maxHitsPerSwing = 4;
-    Collider col;
-    HashSet<Health> hitTargets = new HashSet<Health>();
-    Player_Combat owner;
-    int currentStage = 1;
+    private Collider col;
+    private HashSet<Health> hitTargets = new HashSet<Health>();
+    private Player_Combat owner;
+    private int currentStage = 1;
 
+    [Header("Audio Settings")]
     public AudioSource[] audioSources;
-    public bool hasplay = false;
+    private bool hasPlayedSound = false;
 
     void Awake()
     {
@@ -19,35 +20,14 @@ public class PlayerWeapon : MonoBehaviour
         if (col != null) col.isTrigger = true;
     }
 
-    void OnDisable()
-    {
-        if (col != null) col.enabled = false;
-        hitTargets.Clear();
-    }
-
-    void OnDestroy()
-    {
-        // Notify owner to clear any serialized reference so Inspector won't try to draw a destroyed component
-        if (owner != null)
-        {
-            owner.weaponScript = null;
-        }
-    }
-
+    // Gộp 2 hàm EnableWeapon thành 1 bằng cách dùng tham số mặc định
     public void EnableWeapon(int stage, Player_Combat ownerRef = null)
     {
+        currentStage = Mathf.Max(1, stage);
+        if (ownerRef != null) owner = ownerRef;
         
-        currentStage = stage <= 0 ? 1 : stage;
-        owner = ownerRef == null ? owner : ownerRef;
         hitTargets.Clear();
-        if (col != null) col.enabled = true;
-    }
-
-    // convenience called from Player_Combat
-    public void EnableWeapon(int stage)
-    {
-        currentStage = stage <= 0 ? 1 : stage;
-        hitTargets.Clear();
+        hasPlayedSound = false; // Reset để mỗi cú chém phát âm thanh 1 lần
         if (col != null) col.enabled = true;
     }
 
@@ -59,24 +39,29 @@ public class PlayerWeapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {   
+        // 1. Kiểm tra giới hạn mục tiêu
         if (hitTargets.Count >= maxHitsPerSwing) return;
-        // Require this weapon to be a Sword (by tag or name) to apply sword logic
-        if (!(gameObject.CompareTag("Sword") || gameObject.name.ToLower().Contains("sword"))) return;
 
+        // 2. Kiểm tra đối tượng có máu không
         Health h = other.GetComponentInParent<Health>();
-        if (h == null) return;
-        if (hitTargets.Contains(h)) return;
+        if (h == null || hitTargets.Contains(h)) return;
 
-        // Determine damage and combo name
+        // 3. Logic Âm thanh (Phát ngẫu nhiên 1 lần duy nhất khi trúng mục tiêu đầu tiên)
+        if (audioSources.Length > 0 && !hasPlayedSound)
+        {
+            int r = Random.Range(0, audioSources.Length);
+            audioSources[r].Play();
+            hasPlayedSound = true;
+        }
+
+        // 4. Tính toán sát thương từ Owner
         float dmg = 10f;
-        string comboName = "";
         if (owner != null)
         {
             dmg = owner.GetDamageForStage(currentStage);
-            comboName = owner.GetCurrentComboName();
         }
 
-        // If the hit object has an EnemyBase (or subclass like WarriorSkeleton), call its TakeDamage
+        // 5. Gây sát thương (Ưu tiên EnemyBase để xử lý giáp/điểm)
         EnemyBase enemy = other.GetComponentInParent<EnemyBase>();
         if (enemy != null)
         {
@@ -88,6 +73,12 @@ public class PlayerWeapon : MonoBehaviour
         }
 
         hitTargets.Add(h);
-        Debug.Log($"Sword hit {h.gameObject.name} | combo={comboName} | stage={currentStage} | dmg={dmg}");
+    }
+
+    void OnDisable() => DisableWeapon();
+
+    void OnDestroy()
+    {
+        if (owner != null) owner.weaponScript = null;
     }
 }

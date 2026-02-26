@@ -176,7 +176,7 @@ public class PlayerHandleStats : MonoBehaviour
     {
         var anim = GetComponentInChildren<Animator>();
         if (anim != null) anim.SetTrigger("Died");
-        StartCoroutine(DisableAfterDelay(2.5f));
+        StartCoroutine(DisableAfterDelay(1f));
     }
 
     IEnumerator DisableAfterDelay(float delay)

@@ -23,9 +23,9 @@ MonoBehaviour:
   baseAtk: 10
   atk2Multiplier: 1.2
   atk3Multiplier: 1.6
-  maxHealth: 300
-  currentHealth: 300
-  maxStamina: 200
-  currentStamina: 200
+  maxHealth: 200
+  currentHealth: 0
+  maxStamina: 150
+  currentStamina: 0
   armor: 0
   blockReductionPercent: 0.75

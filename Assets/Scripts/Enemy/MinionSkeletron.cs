@@ -4,6 +4,7 @@ using UnityEngine;
 public class MinionSkeletron : EnemyBase
 {
     [Header("Cài đặt tấn công")]
+    public AudioSource audioSource;
     public string projectileTag = "Arrow"; // Khớp với Tag trong ProjectilePool
     public Transform firePoint;            // Điểm xuất phát của đạn (ví dụ: đầu cung)
     public float atkDmg = 15f;             // Sát thương riêng của con quái này
@@ -14,6 +15,8 @@ public class MinionSkeletron : EnemyBase
 
     protected override void Start()
     {
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
         base.Start();
         currentCdTimer = atkcd; // Khởi tạo hồi chiêu
     }
@@ -59,6 +62,10 @@ public class MinionSkeletron : EnemyBase
 
         // 3. Giai đoạn kết thúc/Hồi chiêu
         animator.SetTrigger("AtkR"); 
+        if(audioSource.isPlaying == false)
+        {
+            audioSource.Play();
+        }
         currentCdTimer = atkcd; // Reset bộ đếm hồi chiêu
         isAtking = false;
     }
