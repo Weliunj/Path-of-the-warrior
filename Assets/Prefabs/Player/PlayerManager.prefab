@@ -928,9 +928,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeapon
   maxHitsPerSwing: 3
   audioSources:
-  - {fileID: 4431105262138278572}
-  - {fileID: 587837666546603527}
-  hasplay: 0
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!65 &505586868600519467
 BoxCollider:
   m_ObjectHideFlags: 0

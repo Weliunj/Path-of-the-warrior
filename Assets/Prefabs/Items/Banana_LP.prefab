@@ -156,5 +156,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609fe2a3959f1bd428bb165231582c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemWorld
-  item: {fileID: 11400000, guid: d418dffce858e1e4688d398f55472148, type: 2}
+  item: {fileID: 11400000, guid: 605272dcc61409046aa7aec977076a8a, type: 2}
   amount: 0

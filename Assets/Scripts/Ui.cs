@@ -17,6 +17,7 @@ public class Ui : MonoBehaviour
     public TextMeshProUGUI MovespeedText;
     public TextMeshProUGUI SprintSpeedText;
     public TextMeshProUGUI ArmorText;
+    public TextMeshProUGUI StregText;
 
     [Header("Inventory Settings")]
     public RectTransform mainUiRect;      
@@ -56,11 +57,12 @@ public class Ui : MonoBehaviour
     {
         hpSlider.value = manager.currentHealth;
         staminaSlider.value = manager.currentStamina;
-        hpText.text = $"Hp: {Mathf.RoundToInt(manager.currentHealth)} / {manager.maxHealth}";
+        hpText.text = $"Hp: {Mathf.RoundToInt(manager.currentHealth)} / {manager.maxHealth:F0}";
         staminaText.text = $"Stamina: {Mathf.RoundToInt(manager.currentStamina)} / {manager.maxStamina}";
         MovespeedText.text = $"Move: {manager.MoveSpeed:F1}";
         SprintSpeedText.text = $"Sprint: {manager.SprintSpeed:F1}";
         ArmorText.text = $"Armor: {manager.armor:F0}";
+        StregText.text = $"Streght: {manager.baseAtk:F0}";
     }
 
     private void ToggleInventory(bool isOpen)
