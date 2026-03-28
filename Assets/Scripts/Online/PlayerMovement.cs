@@ -1,44 +1,43 @@
 using Fusion;
 using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour 
+public class PlayerMovement : NetworkBehaviour
 {
-    private CharacterController _controller;
-    
+    private CharacterController characterController;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
-    public float jumpForce = 5f;
-    public float gravity = -9.81f;
+    public float jumpHeight = 2f;
+    public float gravityValue = -9.81f;
 
-    private Vector3 _velocity; 
+    private Vector3 playerVelocity;
+    private bool isGrounded;
 
-    private void Awake() {
-        _controller = GetComponent<CharacterController>();
+    public override void Spawned()
+    {
+        characterController = GetComponent<CharacterController>();
     }
 
-    public override void FixedUpdateNetwork() 
+    public override void FixedUpdateNetwork()
     {
-        if (Object.HasInputAuthority)
+        if (!HasInputAuthority) return;
+
+        isGrounded = characterController.isGrounded;
+        if (isGrounded && playerVelocity.y < 0) playerVelocity.y = 0f;
+
+        // Di chuyển dựa trên hướng Forward của nhân vật (đã được xoay bởi PlayerCamera)
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+        Vector3 move = (transform.forward * v + transform.right * h).normalized;
+        
+        characterController.Move(move * moveSpeed * Runner.DeltaTime);
+
+        if (Input.GetButton("Jump") && isGrounded)
         {
-            // 1. Di chuyển cơ bản [cite: 54, 67]
-            float moveX = Input.GetAxis("Horizontal");
-            float moveZ = Input.GetAxis("Vertical");
-            Vector3 move = transform.right * moveX + transform.forward * moveZ;
-            _controller.Move(move * moveSpeed * Runner.DeltaTime);
-
-            // 2. Kiểm tra chạm đất (Grounded) [cite: 91]
-            if (_controller.isGrounded && _velocity.y < 0) {
-                _velocity.y = -2f; 
-            }
-
-            // 3. Bắt sự kiện nút Nhảy (Space) [cite: 92, 93]
-            if (Input.GetButtonDown("Jump") && _controller.isGrounded) {
-                _velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-            }
-
-            // Áp dụng trọng lực
-            _velocity.y += gravity * Runner.DeltaTime;
-            _controller.Move(_velocity * Runner.DeltaTime);
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -2f * gravityValue);
         }
+
+        playerVelocity.y += gravityValue * Runner.DeltaTime;
+        characterController.Move(playerVelocity * Runner.DeltaTime);
     }
 }

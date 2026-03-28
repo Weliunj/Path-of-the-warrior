@@ -24,7 +24,7 @@
             "Client": 64,
             "ServerIndex": 0,
             "ClientSendIndex": 1,
-            "ServerSendIndex": 1
+            "ServerSendIndex": 2
         },
         "MaxObjectDestroysSentPerPacket": 32,
         "EnableExperimentalPacketLossRecovery": false,
