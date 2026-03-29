@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 7195097385152433857}
   - component: {fileID: -5915197354842826576}
   - component: {fileID: 991449620581991127}
+  - component: {fileID: 3118718109591380497}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -151,6 +152,7 @@ MonoBehaviour:
   - {fileID: 7195097385152433857}
   - {fileID: -5915197354842826576}
   - {fileID: 991449620581991127}
+  - {fileID: 3118718109591380497}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6467244814416610502
 MonoBehaviour:
@@ -245,6 +247,22 @@ MonoBehaviour:
     _length: 0
     _data:
       Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &3118718109591380497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467785558005741727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02487bb33a4b8d84b9518d26fd335045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthHandler
+  _NetworkHealth: 100
+  maxHealth: 100
+  bloodImage: {fileID: 0}
+  fadeSpeed: 1
 --- !u!1 &5826890104780679097
 GameObject:
   m_ObjectHideFlags: 0

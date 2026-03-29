@@ -73,7 +73,9 @@ public class RoomManager : MonoBehaviour
                 // Runner.Spawn: Lệnh sinh ra một vật thể mạng (Player). 
                 // Nó sẽ tạo ra Object trên TẤT CẢ các máy đang ở chung trong Session này.
                 // _runner.LocalPlayer: Gán quyền điều khiển (Input Authority) cho máy vừa nhấn nút.
-                _runner.Spawn(playerPrefab, new Vector3(0, 3, 0), Quaternion.identity, _runner.LocalPlayer);
+                float x = Random.Range(-10, 10);
+                float z = Random.Range(-10, 10);
+                _runner.Spawn(playerPrefab, new Vector3(x, 10, z), Quaternion.identity, _runner.LocalPlayer);
             }
         }
     }
