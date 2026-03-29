@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 913482047191032369}
   - component: {fileID: 7195097385152433857}
   - component: {fileID: -5915197354842826576}
-  - component: {fileID: 1331090983452118982}
+  - component: {fileID: 991449620581991127}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -150,7 +150,7 @@ MonoBehaviour:
   - {fileID: 6467244814416610502}
   - {fileID: 7195097385152433857}
   - {fileID: -5915197354842826576}
-  - {fileID: 1331090983452118982}
+  - {fileID: 991449620581991127}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6467244814416610502
 MonoBehaviour:
@@ -228,7 +228,7 @@ MonoBehaviour:
   zoomSensitivity: 2
   minDistance: 2
   maxDistance: 10
---- !u!114 &1331090983452118982
+--- !u!114 &991449620581991127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,14 +237,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5467785558005741727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa1ba43f76a65ff488956f649ab4048b, type: 3}
+  m_Script: {fileID: 11500000, guid: 69e9008024643cb4290c3b5b3b77c062, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInfo
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNameHandler
+  _nameText: {fileID: 1020820870022950827}
   _PlayerName:
     _length: 0
     _data:
       Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  nameText: {fileID: 1020820870022950827}
 --- !u!1 &5826890104780679097
 GameObject:
   m_ObjectHideFlags: 0

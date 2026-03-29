@@ -21,11 +21,13 @@ public class MouseLook : NetworkBehaviour
     public float maxDistance = 10f;
 
     private float _verticalRotation = 0f;
-    private float _currentDistance = 5f; // Khoảng cách camera mặc định
+    private float _currentDistance = 5f;
+    
+    // Biến lưu trạng thái khóa chuột
+    private bool _isCursorLocked = true;
 
     public override void Spawned()
     {
-        // Chỉ chạy trên máy của người chơi sở hữu nhân vật này
         if (!HasInputAuthority) return;
 
         _cameraHolderTransform = transform.Find(cameraHolderName);
@@ -34,12 +36,24 @@ public class MouseLook : NetworkBehaviour
         if (_vcam != null && _cameraHolderTransform != null)
         {
             _vcam.Target.TrackingTarget = _cameraHolderTransform;
-            
-            // Lấy component Third Person Follow để chỉnh Distance (Zoom)
             _tpFollow = _vcam.GetComponent<CinemachineThirdPersonFollow>();
             if (_tpFollow != null) _currentDistance = _tpFollow.CameraDistance;
 
-            Cursor.lockState = CursorLockMode.Locked;
+            // Khởi tạo trạng thái ban đầu
+            UpdateCursorState();
+        }
+    }
+
+    // Dùng Update để bắt phím L mượt mà hơn cho UI
+    void Update()
+    {
+        if (!HasInputAuthority) return;
+
+        // --- BẬT/TẮT KHÓA CHUỘT KHI BẤM L ---
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            _isCursorLocked = !_isCursorLocked;
+            UpdateCursorState();
         }
     }
 
@@ -47,14 +61,15 @@ public class MouseLook : NetworkBehaviour
     {
         if (!HasInputAuthority) return;
 
+        // Nếu chuột đang mở khóa (hiện con trỏ) thì không xoay camera
+        if (!_isCursorLocked) return;
+
         // --- 1. XOAY CHUỘT ---
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Runner.DeltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Runner.DeltaTime;
 
-        // Xoay thân người chơi theo trục Y (ngang)
         transform.Rotate(Vector3.up * mouseX);
 
-        // Xoay CameraHolder theo trục X (dọc)
         _verticalRotation -= mouseY;
         _verticalRotation = Mathf.Clamp(_verticalRotation, lowerLookLimit, upperLookLimit);
 
@@ -69,9 +84,22 @@ public class MouseLook : NetworkBehaviour
         {
             _currentDistance -= scroll * zoomSensitivity;
             _currentDistance = Mathf.Clamp(_currentDistance, minDistance, maxDistance);
-            
-            // Cập nhật khoảng cách trực tiếp vào Cinemachine
             _tpFollow.CameraDistance = _currentDistance;
+        }
+    }
+
+    // Hàm cập nhật trạng thái con trỏ chuột
+    private void UpdateCursorState()
+    {
+        if (_isCursorLocked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 }
