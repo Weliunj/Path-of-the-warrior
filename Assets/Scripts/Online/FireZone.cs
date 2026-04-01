@@ -1,72 +1,35 @@
 using UnityEngine;
 using Fusion;
-using System.Collections;
-using System.Collections.Generic; // Để quản lý danh sách người chơi trong vùng
 
-public class FireZone : NetworkBehaviour
+public class FireZone : MonoBehaviour 
 {
     [Header("Cấu hình sát thương")]
-    public float damagePerTick = 5f;    // Sát thương mỗi lần giật
-    public float tickInterval = 1.0f;  // Khoảng thời gian giữa các lần giật (giây)
+    public float damagePerSecond = 10f; 
 
-    // Danh sách để theo dõi những ai đang đứng trong lửa
-    private List<HealthHandler> _playersInZone = new List<HealthHandler>();
+    [Header("Cấu hình hiệu ứng")]
+    public float effectInterval = 0.5f; // Cứ mỗi 0.5s thì nháy đỏ 1 lần
+    private float _nextEffectTime;
 
-    public override void Spawned()
+    private void OnTriggerStay(Collider other)
     {
-        // Chỉ chạy logic gây sát thương trên máy có quyền kiểm soát vùng lửa này
-        // (Trong Shared Mode thường là người tạo ra vùng lửa hoặc Master Client)
-        if (Object.HasStateAuthority)
+        if (other.CompareTag("Player"))
         {
-            StartCoroutine(DealDamageOverTime());
-        }
-    }
-
-    // Khi Player bước vào vùng lửa
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!Object.HasStateAuthority) return;
-
-        HealthHandler hp = other.GetComponent<HealthHandler>();
-        if (hp != null && !_playersInZone.Contains(hp))
-        {
-            _playersInZone.Add(hp);
-            Debug.Log("Player đã vào vùng lửa!");
-        }
-    }
-
-    // Khi Player thoát khỏi vùng lửa
-    private void OnTriggerExit(Collider other)
-    {
-        if (!Object.HasStateAuthority) return;
-
-        HealthHandler hp = other.GetComponent<HealthHandler>();
-        if (hp != null && _playersInZone.Contains(hp))
-        {
-            _playersInZone.Remove(hp);
-            Debug.Log("Player đã thoát khỏi vùng lửa.");
-        }
-    }
-
-    private IEnumerator DealDamageOverTime()
-    {
-        while (true)
-        {
-            // Đợi theo khoảng thời gian tickInterval
-            yield return new WaitForSeconds(tickInterval);
-
-            // Duyệt qua danh sách và gây sát thương
-            for (int i = _playersInZone.Count - 1; i >= 0; i--)
+            StatsHandler stats = other.GetComponent<StatsHandler>();
+            
+            // Chỉ xử lý trên máy nắm quyền điều khiển Player đó (StateAuthority)
+            if (stats != null && stats.Object != null && stats.Object.HasStateAuthority)
             {
-                if (_playersInZone[i] != null)
+                // 1. Trừ máu (Dữ liệu Network)
+                stats.NetworkHealth -= damagePerSecond * Time.deltaTime;
+                stats.NetworkHealth = Mathf.Max(0, stats.NetworkHealth);
+
+                // 2. Kích hoạt Blood Effect (Hiển thị)
+                // Chúng ta dùng RPC để báo cho máy của nạn nhân hiện màn hình đỏ
+                if (Time.time >= _nextEffectTime && stats.NetworkHealth > 0)
                 {
-                    // Gọi RPC nhận sát thương từ script HealthHandler đã làm trước đó
-                    _playersInZone[i].RPC_TakeDamage(damagePerTick);
-                }
-                else
-                {
-                    // Xóa nếu player bị biến mất (ví dụ: thoát game)
-                    _playersInZone.RemoveAt(i);
+                    // Gọi RPC có sẵn trong StatsHandler để hiện hiệu ứng trên máy nạn nhân
+                    stats.RPC_TakeDamage(0); 
+                    _nextEffectTime = Time.time + effectInterval;
                 }
             }
         }

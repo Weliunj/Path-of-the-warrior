@@ -9785,8 +9785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ea58ed0f8c3dfc4ab67d4a3b5d9f368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireZone
-  damagePerTick: 5
-  tickInterval: 1
+  damagePerSecond: 10
+  effectInterval: 0.5
 --- !u!114 &3987037908216120403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9801,8 +9801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
   SortKey: 860559863
   ObjectInterest: 1
-  Flags: 262145
+  Flags: 1
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 6474499966443008333}
+  NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0

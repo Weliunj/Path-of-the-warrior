@@ -5,7 +5,7 @@ using TMPro; // Bắt buộc phải có để điều khiển Text Mesh Pro
 public class PlayerNameHandler : NetworkBehaviour
 {
     [Header("References")]
-    [SerializeField] private TextMeshPro _nameText; // Kéo Object Text vào đây
+    [SerializeField] private TextMeshProUGUI _nameText; // Kéo Object Text vào đây
 
     // Thuộc tính mạng: Tự động đồng bộ cho tất cả mọi người
     [Networked]
